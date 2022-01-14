@@ -313,7 +313,7 @@ function sendMessage(text) {
         message.push(text + fullKey);
         setCacheData(messageID, message, true);
       }
-      
+
       //Updates the Message:
       currentCode = getCacheData(codeID, false);
       database.collection(collectionName).doc(currentCode).update({
@@ -431,19 +431,19 @@ function getGame() {
 
   //Returns the Promise:
   return new Promise((resolve, reject) => {
-    //Checks the Case:
-    if (getCacheData(keyID, false) == promiseKey) {
-      //Timeout:
-      setTimeout(function () {
+    //Timeout:
+    setTimeout(function () {
+      //Checks the Case:
+      if (getCacheData(keyID, false) == promiseKey) {
         //Resolves:
         resolve("Success");
-      }, time);
-    }
+      }
 
-    else {
-      //Rejects:
-      reject("Error");
-    }
+      else {
+        //Rejects:
+        reject("Error");
+      }
+    }, time);
   });
 }
 
