@@ -53,6 +53,7 @@ html, body {
 
 .border {
   border: 5px solid #FFBF00;
+  border-radius: 5px;
 }
 
 .no-decoration {
