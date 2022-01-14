@@ -211,7 +211,7 @@ function showMessage() {
     //Sets the Screen Data:
     currentCode = getCacheData(codeID, false);
     document.getElementById('gameCode').innerHTML =
-      currentCode + "&nbsp; <button onclick='copyJoinLink(" +
+      currentCode + "&nbsp; &nbsp; <button onclick='copyJoinLink(" +
       JSON.stringify(currentCode) + ");'> Copy </button>";
   }
 
