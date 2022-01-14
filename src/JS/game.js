@@ -183,7 +183,7 @@ window.onload = function () {
         sendGuess(this.document.getElementById('guessInput').value);
       }
 
-      else if (getCacheData(disableID, false) != null) {
+      else if (getCacheData(disableID, false) == null) {
         //Sends the Game:
         sendGame(); 
         disableActions(); 
