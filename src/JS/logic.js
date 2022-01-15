@@ -171,12 +171,14 @@ function showControls() {
     //Turns off Join Controls:
     document.getElementById('controlContainer').style.display = "none";
     document.getElementById('chatContainer').style.display = "block";
+    document.getElementById('gameContainer').style.display = "block";
   }
 
   else {
     //Turns on Join Controls:
     document.getElementById('controlContainer').style.display = "block";
     document.getElementById('chatContainer').style.display = "none";
+    document.getElementById('gameContainer').style.display = "none";
   }
 }
 
