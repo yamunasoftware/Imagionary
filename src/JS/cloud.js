@@ -142,7 +142,7 @@ function joinGame(code) {
             full: JSON.stringify(getCacheData(fullID, true))
           }).then((docRef) => {
             //Gets the Data:
-            getGame().then((docRef) => {
+            getGame(false).then((docRef) => {
               //Reloads the Page:
               window.location.href = "https://imagionary.netlify.app";
             })
@@ -295,7 +295,7 @@ function sendGuess(attempt) {
 //Send Message Function:
 function sendMessage(text) {
   //Gets the Game:
-  getGame().then((docRef) => {
+  getGame(true).then((docRef) => {
     //Checks the Case:
     if (text != "" && !text.includes(fullKey)) {
       //Checks the Case:
@@ -336,7 +336,7 @@ function sendMessage(text) {
 }
 
 //Get Game Function:
-function getGame() {
+function getGame(delay) {
   //Checks the Case:
   if (getCacheData(keyID, false) != null) {
     //Removes the Cache Data:
@@ -431,8 +431,24 @@ function getGame() {
 
   //Returns the Promise:
   return new Promise((resolve, reject) => {
-    //Timeout:
-    setTimeout(function () {
+    //Checks the Case:
+    if (delay) {
+      //Timeout:
+      setTimeout(function () {
+        //Checks the Case:
+        if (getCacheData(keyID, false) == promiseKey) {
+          //Resolves:
+          resolve("Success");
+        }
+
+        else {
+          //Rejects:
+          reject("Error");
+        }
+      }, time);
+    }
+
+    else {
       //Checks the Case:
       if (getCacheData(keyID, false) == promiseKey) {
         //Resolves:
@@ -443,7 +459,7 @@ function getGame() {
         //Rejects:
         reject("Error");
       }
-    }, time);
+    }
   });
 }
 

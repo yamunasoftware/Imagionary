@@ -31,7 +31,7 @@ window.onload = function () {
   showDisabledMessage();
 
   //Gets the Game:
-  getGame().catch((error) => {
+  getGame(true).catch((error) => {
     //Prevent Error!
   });
 
