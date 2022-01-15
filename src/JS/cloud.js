@@ -371,13 +371,6 @@ function getGame(delay) {
       //Promise Key:
       setCacheData(keyID, promiseKey, false);
     })
-      .then((docRef) => {
-        //Shows the Game:
-        disableLoading();
-        displayDrawing();
-        showOpponentMessage();
-        showResult();
-      })
       .catch((error) => {
         //Error Message:
         disableLoading();
@@ -415,13 +408,6 @@ function getGame(delay) {
       //Promise Key:
       setCacheData(keyID, promiseKey, false);
     })
-      .then((docRef) => {
-        //Shows the Game:
-        disableLoading();
-        displayDrawing();
-        showOpponentMessage();
-        showResult();
-      })
       .catch((error) => {
         //Error Message:
         disableLoading();
@@ -437,6 +423,12 @@ function getGame(delay) {
       setTimeout(function () {
         //Checks the Case:
         if (getCacheData(keyID, false) == promiseKey) {
+          //Shows the Game:
+          disableLoading();
+          displayDrawing();
+          showOpponentMessage();
+          showResult();
+          
           //Resolves:
           resolve("Success");
         }
@@ -451,6 +443,12 @@ function getGame(delay) {
     else {
       //Checks the Case:
       if (getCacheData(keyID, false) == promiseKey) {
+        //Shows the Game:
+        disableLoading();
+        displayDrawing();
+        showOpponentMessage();
+        showResult();
+        
         //Resolves:
         resolve("Success");
       }
