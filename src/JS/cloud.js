@@ -297,7 +297,7 @@ function sendMessage(text) {
   //Gets the Game:
   getGame().then((docRef) => {
     //Checks the Case:
-    if (text != "") {
+    if (text != "" && !text.includes(fullKey)) {
       //Checks the Case:
       if (getCacheData(fullID, false) == null
         && getCacheData(codeID, false) != null) {
