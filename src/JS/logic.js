@@ -86,9 +86,9 @@ function joinURL() {
     var urlParameters = new URLSearchParams(query);
 
     //Checks the URL Parameters:
-    if (urlParameters.has("code")) {
+    if (urlParameters.has("c")) {
       //Joins the Game:
-      joinGame(urlParameters.get("code"));
+      joinGame(urlParameters.get("c"));
     }
   }
 }
@@ -341,7 +341,7 @@ function generateCode(digits) {
 //Copy Join Link Function:
 function copyJoinLink(code) {
   //Sets the Link:
-  var link = "https://imagionary.netlify.app/?code=" + code;
+  var link = "https://imagionary.netlify.app/?c=" + code;
   navigator.clipboard.writeText(link);
   document.getElementById('gameCode').innerHTML = "Copied";
 }
