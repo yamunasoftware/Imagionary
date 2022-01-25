@@ -84,7 +84,7 @@ function createGame() {
     setCacheData(wordID, word, false);
 
     //Sets the Code:
-    currentCode = generateCode(codeDigits);
+    currentCode = generateCode();
     setCacheData(codeID, currentCode, false);
     checkGame(currentCode);
 
