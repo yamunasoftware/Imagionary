@@ -326,6 +326,7 @@ function sendMessage(text) {
       .catch((error) => {
         //Error Message:
         showGameMessage("An Error Ocurred");
+        console.log(error);
       });
   }
 }
