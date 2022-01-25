@@ -82,9 +82,11 @@ function joinURL() {
 
 //Show Opponent Message Function:
 function showOpponentMessage() {
-  //Array Variables:
+  //Message Array Variables:
   var outgoingArray = getCacheData(outgoingID, true);
   var incomingArray = getCacheData(incomingID, true);
+
+  //Swap Array Variables:
   var combinedArray = [];
   var timeArray = [];
 
@@ -126,15 +128,14 @@ function showOpponentMessage() {
     //Checks the Case:
     if (combinedArray[turns].includes(outgoingKey)) {
       //Gets the Timestamp:
-      var index = combinedArray[turns].indexOf(outgoingKey) + outgoingKey.length + 1;
+      var index = combinedArray[turns].indexOf(outgoingKey) + outgoingKey.length;
       var timestamp = JSON.parse(combinedArray[turns].substring(index));
-      console.log(timestamp);
       timeArray.push(timestamp);
     }
 
     else if (combinedArray[turns].includes(incomingKey)) {
       //Gets the Timestamp:
-      var index = combinedArray[turns].indexOf(incomingKey) + incomingKey.length + 1;
+      var index = combinedArray[turns].indexOf(incomingKey) + incomingKey.length;
       var timestamp = JSON.parse(combinedArray[turns].substring(index));
       timeArray.push(timestamp);
     }
