@@ -126,14 +126,15 @@ function showOpponentMessage() {
     //Checks the Case:
     if (combinedArray[turns].includes(outgoingKey)) {
       //Gets the Timestamp:
-      var index = combinedArray[turns].indexOf(outgoingKey) + outgoingKey.length;
+      var index = combinedArray[turns].indexOf(outgoingKey) + outgoingKey.length + 1;
       var timestamp = JSON.parse(combinedArray[turns].substring(index));
+      console.log(timestamp);
       timeArray.push(timestamp);
     }
 
     else if (combinedArray[turns].includes(incomingKey)) {
       //Gets the Timestamp:
-      var index = combinedArray[turns].indexOf(incomingKey) + incomingKey.length;
+      var index = combinedArray[turns].indexOf(incomingKey) + incomingKey.length + 1;
       var timestamp = JSON.parse(combinedArray[turns].substring(index));
       timeArray.push(timestamp);
     }
