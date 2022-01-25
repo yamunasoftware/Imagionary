@@ -84,7 +84,7 @@ function joinURL() {
 function showOpponentMessage() {
   //Array Variables:
   var outgoingArray = getCacheData(outgoingID, true);
-  var incomingArray = getCacheData(outgoingID, true);
+  var incomingArray = getCacheData(incomingID, true);
   var combinedArray = [];
   var timeArray = [];
 
@@ -104,7 +104,7 @@ function showOpponentMessage() {
   var turnsOutgoing = 0;
   var turnsIncoming = 0;
   var chatContents = "";
-
+  
   //Loops through Array:
   outgoingLoop: while (turnsOutgoing < outgoingArray.length) {
     //Adds to the Array:
