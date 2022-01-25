@@ -7,7 +7,7 @@ navigator.serviceWorker.register('/service-worker.js', {
 
 /* GAME CONTROL VARIABLES */
 
-//Words Array Variable:
+//Game Array Variable:
 var words = [
   "Angel",
   "Eyeball",
@@ -62,19 +62,6 @@ var words = [
   "Bat"
 ];
 
-//Alphabet Array Variable:
-var alphabet = [
-  "a", "b", "c", "d", "e", "f", "g",
-  "h", "i", "j", "k", "l", "m", "n",
-  "o", "p", "q", "r", "s", "t", "u",
-  "v", "w", "x", "y", "z"
-];
-
-//Game Variables:
-var fullKey = "$full";
-var time = 2000;
-var codeDigits = 10;
-
 /* GAME CONTROL FUNCTIONS */
 
 //Join URL Function:
@@ -96,55 +83,162 @@ function joinURL() {
 //Show Opponent Message Function:
 function showOpponentMessage() {
   //Array Variables:
-  var array = getCacheData(messageID, true);
+  var outgoingArray = getCacheData(outgoingID, true);
+  var incomingArray = getCacheData(outgoingID, true);
+  var combinedArray = [];
+  var timeArray = [];
+
+  //Element Variables:
   var box = document.getElementById('chatBox');
   document.getElementById('chatInput').value = "";
 
   //Contents Variables:
   var turns = 0;
+  var turnsUI = 0;
+
+  //Sort Variables:
+  var turnsTime = 0;
+  var swaps = 0;
+
+  //Message Key Variables:
+  var turnsOutgoing = 0;
+  var turnsIncoming = 0;
   var chatContents = "";
 
   //Loops through Array:
-  mainLoop: while (turns < array.length) {
+  outgoingLoop: while (turnsOutgoing < outgoingArray.length) {
+    //Adds to the Array:
+    combinedArray.push(outgoingArray[turnsOutgoing]);
+
+    turnsOutgoing++;
+  }
+
+  //Loops through Array:
+  incomingLoop: while (turnsIncoming < incomingArray.length) {
+    //Adds to the Array:
+    combinedArray.push(incomingArray[turnsIncoming]);
+
+    turnsIncoming++;
+  }
+
+  //Loops through Array:
+  mainLoop: while (turns < combinedArray.length) {
     //Checks the Case:
-    if (getCacheData(fullID, false) == null
-      && getCacheData(codeID, false) != null) {
+    if (combinedArray[turns].includes(outgoingKey)) {
+      //Gets the Timestamp:
+      var index = combinedArray[turns].indexOf(outgoingKey) + outgoingKey.length;
+      var timestamp = JSON.parse(combinedArray.substring(index));
+      timeArray.push(timestamp);
+    }
+
+    else if (combinedArray[turns].includes(incomingKey)) {
+      //Gets the Timestamp:
+      var index = combinedArray[turns].indexOf(incomingKey) + incomingKey.length;
+      var timestamp = JSON.parse(combinedArray.substring(index));
+      timeArray.push(timestamp);
+    }
+
+    turns++;
+  }
+
+  //Loops through Swaps:
+  secondLoop: while (swaps >= 0) {
+    //Sets the Swaps:
+    swaps = 0;
+    
+    //Loops through Array:
+    thirdLoop: while (turnsTime < timeArray.length) {
       //Checks the Case:
-      if (array[turns].includes(fullKey)) {
-        //Adds to the Chat:
-        chatContents += 
-          "<div class='left'> <div class='chatOther space'> " + 
-          array[turns].replace(fullKey, "") + 
-          "</div> </div>";
+      if (turnsTime < timeArray.length - 1) {
+        //Checks the Case:
+        if (timeArray[turnsTime] > timeArray[turnsTime + 1]) {
+          //Makes the Time Swap:
+          var value = timeArray[turnsTime + 1];
+          timeArray[turnsTime + 1] = timeArray[turnsTime];
+          timeArray[turnsTime] = value;
+
+          //Makes the Combined Swap:
+          var value = combinedArray[turnsTime + 1];
+          combinedArray[turnsTime + 1] = combinedArray[turnsTime];
+          combinedArray[turnsTime] = value;
+          swaps++;
+        }
       }
 
       else {
+        //Checks the Case:
+        if (timeArray[turnsTime] < timeArray[turnsTime - 1]) {
+          //Makes the Time Swap:
+          var value = timeArray[turnsTime - 1];
+          timeArray[turnsTime - 1] = timeArray[turnsTime];
+          timeArray[turnsTime] = value;
+
+          //Makes the Combined Swap:
+          var value = combinedArray[turnsTime - 1];
+          combinedArray[turnsTime - 1] = combinedArray[turnsTime];
+          combinedArray[turnsTime] = value;
+          swaps++;
+        }
+      }
+
+      turnsTime++;
+    }
+
+    //Checks the Case:
+    if (swaps == 0) {
+      //Sets the Swaps:
+      swaps = -1;
+    }
+  }
+
+  //Loops through Array:
+  fourthLoop: while (turnsUI < combinedArray.length) {
+    //Checks the Case:
+    if (combinedArray[turnsUI].includes(outgoingKey)) {
+      //Gets the Message:
+      var index = combinedArray[turnsUI].indexOf(outgoingKey) - 1;
+      var message = combinedArray.substring(0, index);
+
+      //Checks the Case:
+      if (getCacheData(fullID, false) == null
+        && getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents += 
           "<div class='right'> <div class='chat space'> " + 
-          array[turns] + "</div> </div>";
+          message + "</div> </div>";
+      }
+
+      else if (getCacheData(codeID, false) != null) {
+        //Adds to the Chat:
+        chatContents += 
+          "<div class='right'> <div class='chatOther space'> " + 
+          message + "</div> </div>";
       }
     }
 
-    else if (getCacheData(codeID, false) != null) {
+    else if (combinedArray[turnsUI].includes(incomingKey)) {
+      //Gets the Message:
+      var index = combinedArray[turnsUI].indexOf(incomingKey) - 1;
+      var message = combinedArray.substring(0, index);
+
       //Checks the Case:
-      if (array[turns].includes(fullKey)) {
+      if (getCacheData(fullID, false) == null
+        && getCacheData(codeID, false) != null) {
+        //Adds to the Chat:
+        chatContents += 
+          "<div class='right'> <div class='chatOther space'> " + 
+          message + "</div> </div>";
+      }
+
+      else if (getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents += 
           "<div class='right'> <div class='chat space'> " + 
-          array[turns].replace(fullKey, "") + 
-          "</div> </div>";
-      }
-
-      else {
-        //Adds to the Chat:
-        chatContents += 
-          "<div class='left'> <div class='chatOther space'> " + 
-          array[turns] + "</div> </div>";
+          message + "</div> </div>";
       }
     }
     
-    turns++;
+    turnsUI++;
   }
 
   //Sets the HTML:
@@ -241,7 +335,7 @@ function showResult() {
       setTimeout(function () {
         //Reloads Page:
         window.location.href = "https://imagionary.netlify.app";
-      }, time);
+      }, 1000);
     }
 
     else if (getCacheData(codeID, false) != null) {
@@ -254,7 +348,7 @@ function showResult() {
       setTimeout(function () {
         //Reloads Page:
         window.location.href = "https://imagionary.netlify.app";
-      }, time);
+      }, 1000);
     }
   }
 
@@ -272,7 +366,7 @@ function showResult() {
       setTimeout(function () {
         //Reloads Page:
         window.location.href = "https://imagionary.netlify.app";
-      }, time);
+      }, 1000);
     }
 
     else if (getCacheData(codeID, false) != null) {
@@ -285,7 +379,7 @@ function showResult() {
       setTimeout(function () {
         //Reloads Page:
         window.location.href = "https://imagionary.netlify.app";
-      }, time);
+      }, 1000);
     }
   }
 }
@@ -309,27 +403,16 @@ function randomWord() {
 }
 
 //Generate Code Function:
-function generateCode(digits) {
+function generateCode() {
   //Loop Variables:
   var turns = 0;
-  var numbers = 10, letters = 26, max = numbers + letters;
   var code = "";
 
   //Loops through Array:
-  mainLoop: while (turns < digits) {
+  mainLoop: while (turns < 20) {
     //Gets the Digit:
-    var digit = Math.floor(Math.random() * max);
-
-    //Checks the Case:
-    if (digit < 10) {
-      //Sets the Code:
-      code += digit;
-    }
-
-    else {
-      //Sets the Code:
-      code += alphabet[digit - 10];
-    }
+    var digit = Math.floor(Math.random() * 10);
+    code += digit;
 
     turns++;
   }
@@ -337,7 +420,6 @@ function generateCode(digits) {
   //Returns the Code:
   return code;
 }
-
 //Copy Join Link Function:
 function copyJoinLink(code) {
   //Sets the Link:

@@ -21,25 +21,29 @@ var database = firebase.firestore();
 //Game Variables:
 var currentCode = "";
 var drawing = [];
-var message = [];
+var outgoing = [];
+var incoming = [];
 var full = false;
 var word = "";
 var guess = "";
 var disable = true;
 var check = false;
-var promiseKey = "promise";
 
-//Cloud Variables:
-var collectionName = "games";
+//ID Variables:
 var codeID = "currentCode";
 var drawingID = "drawing";
-var messageID = "message";
+var outgoingID = "outgoing";
+var incomingID = "incoming";
 var fullID = "full";
 var wordID = "word";
 var guessID = "guess";
 var disableID = "disable";
 var checkID = "check";
-var keyID = "key";
+
+//Cloud Response Variables:
+var collectionName = "games";
+var outgoingKey = "$outgoing:";
+var incomingKey = "$incoming:";
 
 /* CLOUD STORAGE FUNCTIONS */
 
@@ -89,7 +93,8 @@ function createGame() {
       //Sets the Cloud Database:
       database.collection(collectionName).doc(currentCode).set({
         drawing: JSON.stringify(drawing),
-        message: JSON.stringify(message),
+        outgoing: JSON.stringify(outgoing),
+        incoming: JSON.stringify(incoming),
         full: JSON.stringify(full),
         guess: guess,
         word: word
@@ -98,7 +103,8 @@ function createGame() {
           //Sets the Cache Data:
           setCacheData(drawingID, drawing, true);
           setCacheData(guessID, guess, false);
-          setCacheData(messageID, message, true);
+          setCacheData(outgoingID, outgoing, true);
+          setCacheData(incomingID, incoming, true);
 
           //Reloads Page:
           window.location.href = "https://imagionary.netlify.app";
@@ -142,14 +148,8 @@ function joinGame(code) {
             full: JSON.stringify(getCacheData(fullID, true))
           }).then((docRef) => {
             //Gets the Data:
-            getGame(false).then((docRef) => {
-              //Reloads the Page:
-              window.location.href = "https://imagionary.netlify.app";
-            })
-              .catch((error) => {
-                //Joins Again:
-                joinGame(code);
-              });
+            getGame();
+            window.location.href = "https://imagionary.netlify.app";
           })
             .catch((error) => {
               //Error Message:
@@ -294,55 +294,44 @@ function sendGuess(attempt) {
 
 //Send Message Function:
 function sendMessage(text) {
-  //Gets the Game:
-  getGame(true).then((docRef) => {
+  //Checks the Case:
+  if (text != "" && !text.includes(outgoingKey) 
+    && !text.includes(incomingKey)) {
     //Checks the Case:
-    if (text != "" && !text.includes(fullKey)) {
-      //Checks the Case:
-      if (getCacheData(fullID, false) == null
-        && getCacheData(codeID, false) != null) {
-        //Adds to the Message:
-        message = getCacheData(messageID, true);
-        message.push(text);
-        setCacheData(messageID, message, true);
-      }
-
-      else if (getCacheData(codeID, false) != null) {
-        //Adds to the Message:
-        message = getCacheData(messageID, true);
-        message.push(text + fullKey);
-        setCacheData(messageID, message, true);
-      }
-
-      //Updates the Message:
-      currentCode = getCacheData(codeID, false);
-      database.collection(collectionName).doc(currentCode).update({
-        message: JSON.stringify(getCacheData(messageID, true))
-      })
-        .then((docRef) => {
-          //Shows Opponent Message:
-          showOpponentMessage();
-        })
-        .catch((error) => {
-          //Error Message:
-          showGameMessage("An Error Ocurred");
-        });
+    if (getCacheData(fullID, false) == null
+      && getCacheData(codeID, false) != null) {
+      //Adds to the Outgoing:
+      outgoing = getCacheData(outgoingID, true);
+      outgoing.push(text + outgoingKey + JSON.stringify(Date.now()));
+      setCacheData(outgoingID, outgoing, true);
     }
-  })
-    .catch((error) => {
-      //Sends Again:
-      sendMessage(text);
-    });
+
+    else if (getCacheData(codeID, false) != null) {
+      //Adds to the Outgoing:
+      incoming = getCacheData(incomingID, true);
+      incoming.push(text + incomingKey + JSON.stringify(Date.now()));
+      setCacheData(incomingID, incoming, true);
+    }
+
+    //Updates the Message:
+    currentCode = getCacheData(codeID, false);
+    database.collection(collectionName).doc(currentCode).update({
+      outgoing: JSON.stringify(getCacheData(outgoingID, true)),
+      incoming: JSON.stringify(getCacheData(incomingID, true))
+    })
+      .then((docRef) => {
+        //Shows Opponent Message:
+        showOpponentMessage();
+      })
+      .catch((error) => {
+        //Error Message:
+        showGameMessage("An Error Ocurred");
+      });
+  }
 }
 
 //Get Game Function:
-function getGame(delay) {
-  //Checks the Case:
-  if (getCacheData(keyID, false) != null) {
-    //Removes the Cache Data:
-    removeCacheData(keyID);
-  }
-
+function getGame() {
   //Checks the Case:
   if (getCacheData(fullID, false) == null
     && getCacheData(codeID, false) != null) {
@@ -356,9 +345,13 @@ function getGame(delay) {
       drawing = JSON.parse(formatData(JSON.stringify(docRef.data().drawing)));
       setCacheData(drawingID, drawing, true);
 
-      //Sets the Message:
-      message = JSON.parse(formatData(JSON.stringify(docRef.data().message)));
-      setCacheData(messageID, message, true);
+      //Sets the Outgoing:
+      outgoing = JSON.parse(formatData(JSON.stringify(docRef.data().outgoing)));
+      setCacheData(outgoingID, outgoing, true);
+
+      //Sets the Outgoing:
+      incoming = JSON.parse(formatData(JSON.stringify(docRef.data().incoming)));
+      setCacheData(incomingID, incoming, true);
 
       //Sets the Guess:
       guess = formatData(JSON.stringify(docRef.data().guess));
@@ -367,9 +360,6 @@ function getGame(delay) {
       //Sets the Word:
       word = formatData(JSON.stringify(docRef.data().word));
       setCacheData(wordID, word, false);
-
-      //Promise Key:
-      setCacheData(keyID, promiseKey, false);
     })
       .catch((error) => {
         //Error Message:
@@ -389,9 +379,13 @@ function getGame(delay) {
       drawing = JSON.parse(formatData(JSON.stringify(docRef.data().drawing)));
       setCacheData(drawingID, drawing, true);
 
-      //Sets the Message:
-      message = JSON.parse(formatData(JSON.stringify(docRef.data().message)));
-      setCacheData(messageID, message, true);
+      //Sets the Outgoing:
+      outgoing = JSON.parse(formatData(JSON.stringify(docRef.data().outgoing)));
+      setCacheData(outgoingID, outgoing, true);
+
+      //Sets the Outgoing:
+      incoming = JSON.parse(formatData(JSON.stringify(docRef.data().incoming)));
+      setCacheData(incomingID, incoming, true);
 
       //Sets the Guess:
       guess = formatData(JSON.stringify(docRef.data().guess));
@@ -404,9 +398,6 @@ function getGame(delay) {
       //Sets the Full:
       full = JSON.parse(formatData(JSON.stringify(docRef.data().full)));
       setCacheData(fullID, full, true);
-
-      //Promise Key:
-      setCacheData(keyID, promiseKey, false);
     })
       .catch((error) => {
         //Error Message:
@@ -414,51 +405,6 @@ function getGame(delay) {
         showGameMessage("An Error Ocurred");
       });
   }
-
-  //Returns the Promise:
-  return new Promise((resolve, reject) => {
-    //Checks the Case:
-    if (delay) {
-      //Timeout:
-      setTimeout(function () {
-        //Checks the Case:
-        if (getCacheData(keyID, false) == promiseKey) {
-          //Shows the Game:
-          disableLoading();
-          displayDrawing();
-          showOpponentMessage();
-          showResult();
-          
-          //Resolves:
-          resolve("Success");
-        }
-
-        else {
-          //Rejects:
-          reject("Error");
-        }
-      }, time);
-    }
-
-    else {
-      //Checks the Case:
-      if (getCacheData(keyID, false) == promiseKey) {
-        //Shows the Game:
-        disableLoading();
-        displayDrawing();
-        showOpponentMessage();
-        showResult();
-        
-        //Resolves:
-        resolve("Success");
-      }
-
-      else {
-        //Rejects:
-        reject("Error");
-      }
-    }
-  });
 }
 
 /* CACHE DATA FUNCTIONS */
