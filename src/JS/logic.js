@@ -127,14 +127,14 @@ function showOpponentMessage() {
     if (combinedArray[turns].includes(outgoingKey)) {
       //Gets the Timestamp:
       var index = combinedArray[turns].indexOf(outgoingKey) + outgoingKey.length;
-      var timestamp = JSON.parse(combinedArray.substring(index));
+      var timestamp = JSON.parse(combinedArray[turns].substring(index));
       timeArray.push(timestamp);
     }
 
     else if (combinedArray[turns].includes(incomingKey)) {
       //Gets the Timestamp:
       var index = combinedArray[turns].indexOf(incomingKey) + incomingKey.length;
-      var timestamp = JSON.parse(combinedArray.substring(index));
+      var timestamp = JSON.parse(combinedArray[turns].substring(index));
       timeArray.push(timestamp);
     }
 
@@ -197,7 +197,7 @@ function showOpponentMessage() {
     if (combinedArray[turnsUI].includes(outgoingKey)) {
       //Gets the Message:
       var index = combinedArray[turnsUI].indexOf(outgoingKey) - 1;
-      var message = combinedArray.substring(0, index);
+      var message = combinedArray[turnsUI].substring(0, index);
 
       //Checks the Case:
       if (getCacheData(fullID, false) == null
@@ -219,7 +219,7 @@ function showOpponentMessage() {
     else if (combinedArray[turnsUI].includes(incomingKey)) {
       //Gets the Message:
       var index = combinedArray[turnsUI].indexOf(incomingKey) - 1;
-      var message = combinedArray.substring(0, index);
+      var message = combinedArray[turnsUI].substring(0, index);
 
       //Checks the Case:
       if (getCacheData(fullID, false) == null
