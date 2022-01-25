@@ -295,7 +295,7 @@ function sendGuess(attempt) {
 //Send Message Function:
 function sendMessage(text) {
   //Checks the Case:
-  if (text != "" && !text.includes(outgoingKey) 
+  if (text != "" && !text.includes(outgoingKey)
     && !text.includes(incomingKey)) {
     //Checks the Case:
     if (getCacheData(fullID, false) == null
@@ -361,6 +361,13 @@ function getGame() {
       word = formatData(JSON.stringify(docRef.data().word));
       setCacheData(wordID, word, false);
     })
+      .then((docRef) => {
+        //Shows the Game:
+        disableLoading();
+        displayDrawing();
+        showOpponentMessage();
+        showResult();
+      })
       .catch((error) => {
         //Error Message:
         disableLoading();
@@ -399,6 +406,13 @@ function getGame() {
       full = JSON.parse(formatData(JSON.stringify(docRef.data().full)));
       setCacheData(fullID, full, true);
     })
+      .then((docRef) => {
+        //Shows the Game:
+        disableLoading();
+        displayDrawing();
+        showOpponentMessage();
+        showResult();
+      })
       .catch((error) => {
         //Error Message:
         disableLoading();
