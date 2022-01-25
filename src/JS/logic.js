@@ -196,7 +196,7 @@ function showOpponentMessage() {
     //Checks the Case:
     if (combinedArray[turnsUI].includes(outgoingKey)) {
       //Gets the Message:
-      var index = combinedArray[turnsUI].indexOf(outgoingKey) - 1;
+      var index = combinedArray[turnsUI].indexOf(outgoingKey);
       var message = combinedArray[turnsUI].substring(0, index);
 
       //Checks the Case:
@@ -211,14 +211,14 @@ function showOpponentMessage() {
       else if (getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents += 
-          "<div class='right'> <div class='chatOther space'> " + 
+          "<div class='left'> <div class='chatOther space'> " + 
           message + "</div> </div>";
       }
     }
 
     else if (combinedArray[turnsUI].includes(incomingKey)) {
       //Gets the Message:
-      var index = combinedArray[turnsUI].indexOf(incomingKey) - 1;
+      var index = combinedArray[turnsUI].indexOf(incomingKey);
       var message = combinedArray[turnsUI].substring(0, index);
 
       //Checks the Case:
@@ -226,7 +226,7 @@ function showOpponentMessage() {
         && getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents += 
-          "<div class='right'> <div class='chatOther space'> " + 
+          "<div class='left'> <div class='chatOther space'> " + 
           message + "</div> </div>";
       }
 
