@@ -304,6 +304,20 @@ function sendMessage(text) {
       outgoing = getCacheData(outgoingID, true);
       outgoing.push(text + outgoingKey + JSON.stringify(Date.now()));
       setCacheData(outgoingID, outgoing, true);
+
+      //Updates the Message:
+      currentCode = getCacheData(codeID, false);
+      database.collection(collectionName).doc(currentCode).update({
+        outgoing: JSON.stringify(getCacheData(outgoingID, true))
+      })
+        .then((docRef) => {
+          //Shows Opponent Message:
+          showOpponentMessage();
+        })
+        .catch((error) => {
+          //Error Message:
+          showGameMessage("An Error Ocurred");
+        });
     }
 
     else if (getCacheData(codeID, false) != null) {
@@ -311,22 +325,21 @@ function sendMessage(text) {
       incoming = getCacheData(incomingID, true);
       incoming.push(text + incomingKey + JSON.stringify(Date.now()));
       setCacheData(incomingID, incoming, true);
-    }
 
-    //Updates the Message:
-    currentCode = getCacheData(codeID, false);
-    database.collection(collectionName).doc(currentCode).update({
-      outgoing: JSON.stringify(getCacheData(outgoingID, true)),
-      incoming: JSON.stringify(getCacheData(incomingID, true))
-    })
-      .then((docRef) => {
-        //Shows Opponent Message:
-        showOpponentMessage();
+      //Updates the Message:
+      currentCode = getCacheData(codeID, false);
+      database.collection(collectionName).doc(currentCode).update({
+        incoming: JSON.stringify(getCacheData(incomingID, true))
       })
-      .catch((error) => {
-        //Error Message:
-        showGameMessage("An Error Ocurred");
-      });
+        .then((docRef) => {
+          //Shows Opponent Message:
+          showOpponentMessage();
+        })
+        .catch((error) => {
+          //Error Message:
+          showGameMessage("An Error Ocurred");
+        });
+    }
   }
 }
 
