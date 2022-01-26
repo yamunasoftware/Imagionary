@@ -210,7 +210,7 @@ function sortMessages(messages) {
           }
         }
 
-        else {
+        else if (array.length != 1) {
           //Checks the Case:
           if (array[turns - 1].includes(outgoingKey)) {
             //Sets the Stamps:
@@ -288,7 +288,7 @@ function sortMessages(messages) {
           }
         }
 
-        else {
+        else if (array.length != 1) {
           //Checks the Case:
           if (array[turns - 1].includes(outgoingKey)) {
             //Sets the Stamps:
