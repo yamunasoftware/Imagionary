@@ -329,7 +329,7 @@ function sortMessages() {
       //Checks the Case:
       if (turns < array.length - 1) {
         //Checks the Case:
-        if (array[turns].includes(outgoingKey)) {
+        if (array[turns + 1].includes(outgoingKey)) {
           //Sets the Stamps:
           var indexNext = array[turns + 1].indexOf(outgoingKey) + outgoingKey.length;
           var stringNext = array[turns + 1].substring(indexNext);
@@ -345,7 +345,7 @@ function sortMessages() {
           }
         }
 
-        else if (array[turns].includes(incomingKey)) {
+        else if (array[turns + 1].includes(incomingKey)) {
           //Sets the Stamps:
           var indexNext = array[turns + 1].indexOf(incomingKey) + incomingKey.length;
           var stringNext = array[turns + 1].substring(indexNext);
@@ -364,7 +364,7 @@ function sortMessages() {
 
       else {
         //Checks the Case:
-        if (array[turns].includes(outgoingKey)) {
+        if (array[turns - 1].includes(outgoingKey)) {
           //Sets the Stamps:
           var indexNext = array[turns - 1].indexOf(outgoingKey) + outgoingKey.length;
           var stringNext = array[turns - 1].substring(indexNext);
@@ -380,7 +380,7 @@ function sortMessages() {
           }
         }
 
-        else if (array[turns].includes(incomingKey)) {
+        else if (array[turns - 1].includes(incomingKey)) {
           //Sets the Stamps:
           var indexNext = array[turns - 1].indexOf(incomingKey) + incomingKey.length;
           var stringNext = array[turns - 1].substring(indexNext);
@@ -407,7 +407,7 @@ function sortMessages() {
       //Checks the Case:
       if (turns < array.length - 1) {
         //Checks the Case:
-        if (array[turns].includes(outgoingKey)) {
+        if (array[turns + 1].includes(outgoingKey)) {
           //Sets the Stamps:
           var indexNext = array[turns + 1].indexOf(outgoingKey) + outgoingKey.length;
           var stringNext = array[turns + 1].substring(indexNext);
@@ -423,7 +423,7 @@ function sortMessages() {
           }
         }
 
-        else if (array[turns].includes(incomingKey)) {
+        else if (array[turns + 1].includes(incomingKey)) {
           //Sets the Stamps:
           var indexNext = array[turns + 1].indexOf(incomingKey) + incomingKey.length;
           var stringNext = array[turns + 1].substring(indexNext);
@@ -442,7 +442,7 @@ function sortMessages() {
 
       else {
         //Checks the Case:
-        if (array[turns].includes(outgoingKey)) {
+        if (array[turns - 1].includes(outgoingKey)) {
           //Sets the Stamps:
           var indexNext = array[turns - 1].indexOf(outgoingKey) + outgoingKey.length;
           var stringNext = array[turns - 1].substring(indexNext);
@@ -458,7 +458,7 @@ function sortMessages() {
           }
         }
 
-        else if (array[turns].includes(incomingKey)) {
+        else if (array[turns - 1].includes(incomingKey)) {
           //Sets the Stamps:
           var indexNext = array[turns - 1].indexOf(incomingKey) + incomingKey.length;
           var stringNext = array[turns - 1].substring(indexNext);
