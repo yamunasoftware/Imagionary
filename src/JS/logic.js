@@ -97,7 +97,7 @@ function showOpponentMessage() {
   var chatContents = "";
 
   //Loops through Array:
-  secondLoop: while (turns < outgoingArray.length) {
+  mainLoop: while (turns < outgoingArray.length) {
     //Gets the Outgoing Data:
     var outgoingIndex = outgoingArray[counts].indexOf(outgoingKey) + outgoingKey.length;
     var outgoingString = outgoingArray[turns].substring(outgoingIndex);
