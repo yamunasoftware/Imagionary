@@ -69,7 +69,7 @@ function showOpponentMessage() {
   //Message Array Variables:
   var outgoingArray = getCacheData(outgoingID, true);
   var incomingArray = getCacheData(incomingID, true);
-  var combinedArray = outgoingArray;
+  var combinedArray = [];
 
   //Element Variables:
   var box = document.getElementById('chatBox');
@@ -78,6 +78,17 @@ function showOpponentMessage() {
   //Contents Variables:
   var turns = 0;
   var chatContents = "";
+
+  //Loops through Array:
+  mainLoop: while (turns < outgoingArray.length) {
+    //Adds to the Combined Array:
+    combinedArray.push(outgoingArray[turns]);
+    
+    turns++;
+  }
+
+  //Resets the Counter:
+  turns = 0;
 
   //Loops through Array:
   mainLoop: while (turns < outgoingArray.length) {
@@ -102,7 +113,7 @@ function showOpponentMessage() {
         //Checks the Case:
         if (!combinedArray.includes(incomingArray[counts])) {
           //Adds the Elements Before:
-          //combinedArray = addBefore(combinedArray, outgoingArray[turns], incomingArray[counts]);
+          combinedArray = addBefore(combinedArray, outgoingArray[turns], incomingArray[counts]);
         }
       }
 
