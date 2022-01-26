@@ -45,10 +45,6 @@ var collectionName = "games";
 var outgoingKey = "$outgoing:";
 var incomingKey = "$incoming:";
 
-//Sorting Variables:
-var swaps = 0;
-var array = [];
-
 /* CLOUD STORAGE FUNCTIONS */
 
 //Check Game Function:
