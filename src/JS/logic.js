@@ -112,6 +112,7 @@ function showOpponentMessage() {
       var incomingIndex = incomingArray[counts].indexOf(incomingKey) + incomingKey.length;
       var incomingString = incomingArray[counts].substring(incomingIndex);
       var incomingStamp = JSON.parse(incomingString);
+      console.log(incomingStamp + ", " + outgoingStamp);
       
       //Checks the Case:
       if (incomingStamp < outgoingStamp) {
@@ -124,7 +125,6 @@ function showOpponentMessage() {
         combinedArray.push(incomingArray[counts]);
       }
       
-      console.log(combinedArray);
       counts++;
     }
 
