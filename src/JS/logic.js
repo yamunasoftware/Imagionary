@@ -84,7 +84,6 @@ function showOpponentMessage() {
     //Gets the Outgoing Data:
     var outgoingIndex = outgoingArray[turns].indexOf(outgoingKey) + outgoingKey.length;
     var outgoingString = outgoingArray[turns].substring(outgoingIndex);
-    console.log(outgoingArray);
     var outgoingStamp = JSON.parse(outgoingString);
     
     //Loop Variable:
@@ -108,7 +107,7 @@ function showOpponentMessage() {
 
       else if (turns == outgoingArray.length - 1) {
         //Adds to the Main Array:
-        mainArray.push(incomingArray[counts]);
+        combinedArray.push(incomingArray[counts]);
       }
       
       counts++;
