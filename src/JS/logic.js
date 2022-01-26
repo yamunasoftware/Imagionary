@@ -355,6 +355,7 @@ function addBefore(array, value, add) {
     if (array[turns] == value && !passed) {
       //Adds to the Local Array:
       localArray.push(add);
+      localArray.push(array[turns]);
       passed = true;
     }
 
