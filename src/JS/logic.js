@@ -85,10 +85,7 @@ function showOpponentMessage() {
   //Message Array Variables:
   var outgoingArray = getCacheData(outgoingID, true);
   var incomingArray = getCacheData(incomingID, true);
-
-  //Swap Array Variables:
-  var combinedArray = [];
-  var timeArray = [];
+  var combinedArray = outgoingArray;
 
   //Element Variables:
   var box = document.getElementById('chatBox');
@@ -96,110 +93,50 @@ function showOpponentMessage() {
 
   //Contents Variables:
   var turns = 0;
-  var turnsUI = 0;
-
-  //Sort Variables:
-  var turnsTime = 0;
-  var swaps = 0;
-
-  //Message Key Variables:
-  var turnsOutgoing = 0;
-  var turnsIncoming = 0;
+  var moves = 0;
   var chatContents = "";
-  
-  //Loops through Array:
-  outgoingLoop: while (turnsOutgoing < outgoingArray.length) {
-    //Adds to the Array:
-    combinedArray.push(outgoingArray[turnsOutgoing]);
-
-    turnsOutgoing++;
-  }
 
   //Loops through Array:
-  incomingLoop: while (turnsIncoming < incomingArray.length) {
-    //Adds to the Array:
-    combinedArray.push(incomingArray[turnsIncoming]);
+  secondLoop: while (turns < outgoingArray.length) {
+    //Gets the Outgoing Data:
+    var outgoingIndex = outgoingArray[counts].indexOf(outgoingKey) + outgoingKey.length;
+    var outgoingString = outgoingArray[turns].substring(outgoingIndex);
+    var outgoingStamp = JSON.parse(outgoingString);
+    
+    //Loop Variable:
+    var counts = 0;
 
-    turnsIncoming++;
-  }
+    //Loops through Array:
+    secondLoop: while (counts < incomingArray.length) {
+      //Gets the Incoming Data:
+      var incomingIndex = incomingArray[turns].indexOf(incomingKey) + incomingKey.length;
+      var incomingString = incomingArray[turns].substring(incomingIndex);
+      var incomingStamp = JSON.parse(incomingString);
+      
+      //Checks the Case:
+      if (incomingStamp < outgoingStamp) {
+        //Adds the Value Before:
+        combinedArray = addBefore(combinedArray, outgoingArray[turns], incomingArray[counts]);
+      }
 
-  //Loops through Array:
-  mainLoop: while (turns < combinedArray.length) {
-    //Checks the Case:
-    if (combinedArray[turns].includes(outgoingKey)) {
-      //Gets the Timestamp:
-      var index = combinedArray[turns].indexOf(outgoingKey) + outgoingKey.length;
-      var timestamp = JSON.parse(combinedArray[turns].substring(index));
-      timeArray.push(timestamp);
-    }
-
-    else if (combinedArray[turns].includes(incomingKey)) {
-      //Gets the Timestamp:
-      var index = combinedArray[turns].indexOf(incomingKey) + incomingKey.length;
-      var timestamp = JSON.parse(combinedArray[turns].substring(index));
-      timeArray.push(timestamp);
+      else if (turns == outgoingArray.length-1) {
+        //Adds the Value:
+        combinedArray.push(incomingArray[counts]);
+      }
+      
+      counts++;
     }
 
     turns++;
   }
 
-  //Loops through Swaps:
-  secondLoop: while (swaps >= 0) {
-    //Sets the Swaps:
-    swaps = 0;
-    
-    //Loops through Array:
-    thirdLoop: while (turnsTime < timeArray.length) {
-      //Checks the Case:
-      if (turnsTime < timeArray.length - 1) {
-        //Checks the Case:
-        if (timeArray[turnsTime] > timeArray[turnsTime + 1]) {
-          //Makes the Time Swap:
-          var value = timeArray[turnsTime + 1];
-          timeArray[turnsTime + 1] = timeArray[turnsTime];
-          timeArray[turnsTime] = value;
-
-          //Makes the Combined Swap:
-          var value = combinedArray[turnsTime + 1];
-          combinedArray[turnsTime + 1] = combinedArray[turnsTime];
-          combinedArray[turnsTime] = value;
-          swaps++;
-        }
-      }
-
-      else {
-        //Checks the Case:
-        if (timeArray[turnsTime] < timeArray[turnsTime - 1]) {
-          //Makes the Time Swap:
-          var value = timeArray[turnsTime - 1];
-          timeArray[turnsTime - 1] = timeArray[turnsTime];
-          timeArray[turnsTime] = value;
-
-          //Makes the Combined Swap:
-          var value = combinedArray[turnsTime - 1];
-          combinedArray[turnsTime - 1] = combinedArray[turnsTime];
-          combinedArray[turnsTime] = value;
-          swaps++;
-        }
-      }
-
-      turnsTime++;
-    }
-
-    //Checks the Case:
-    if (swaps == 0) {
-      //Sets the Swaps:
-      swaps = -1;
-    }
-  }
-
   //Loops through Array:
-  fourthLoop: while (turnsUI < combinedArray.length) {
+  thirdLoop: while (moves < combinedArray.length) {
     //Checks the Case:
-    if (combinedArray[turnsUI].includes(outgoingKey)) {
+    if (combinedArray[moves].includes(outgoingKey)) {
       //Gets the Message:
-      var index = combinedArray[turnsUI].indexOf(outgoingKey);
-      var message = combinedArray[turnsUI].substring(0, index);
+      var index = combinedArray[moves].indexOf(outgoingKey);
+      var message = combinedArray[moves].substring(0, index);
 
       //Checks the Case:
       if (getCacheData(fullID, false) == null
@@ -218,10 +155,10 @@ function showOpponentMessage() {
       }
     }
 
-    else if (combinedArray[turnsUI].includes(incomingKey)) {
+    else if (combinedArray[moves].includes(incomingKey)) {
       //Gets the Message:
-      var index = combinedArray[turnsUI].indexOf(incomingKey);
-      var message = combinedArray[turnsUI].substring(0, index);
+      var index = combinedArray[moves].indexOf(incomingKey);
+      var message = combinedArray[moves].substring(0, index);
 
       //Checks the Case:
       if (getCacheData(fullID, false) == null
@@ -240,7 +177,7 @@ function showOpponentMessage() {
       }
     }
     
-    turnsUI++;
+    moves++;
   }
 
   //Sets the HTML:
@@ -404,6 +341,34 @@ function randomWord() {
   return words[index];
 }
 
+//Add Before Function:
+function addBefore(array, value, add) {
+  //Loop Variables:
+  var localArray = [];
+  var turns = 0;
+  var passed = false;
+
+  //Loops through Array:
+  mainLoop: while (turns < array.length) {
+    //Checks the Case:
+    if (array[turns] == value && !passed) {
+      //Adds to the Local Array:
+      localArray.push(add);
+      passed = true;
+    }
+
+    else {
+      //Adds to the Local Array:
+      localArray.push(array[turns]);
+    }
+    
+    turns++;
+  }
+
+  //Returns the Local Array:
+  return localArray;
+}
+
 //Generate Code Function:
 function generateCode() {
   //Loop Variables:
@@ -422,6 +387,7 @@ function generateCode() {
   //Returns the Code:
   return code;
 }
+
 //Copy Join Link Function:
 function copyJoinLink(code) {
   //Sets the Link:
