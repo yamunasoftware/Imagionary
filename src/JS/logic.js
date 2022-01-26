@@ -146,6 +146,7 @@ function sortMessages(array1, array2) {
     //Gets the Outgoing Data:
     var outgoingIndex = outgo[turns].indexOf(outgoingKey) + outgoingKey.length;
     var outgoingString = outgo[turns].substring(outgoingIndex);
+    console.log(outgoingString)
     var outgoingStamp = JSON.parse(outgoingString);
     
     //Loop Variable:
