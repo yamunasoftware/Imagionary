@@ -85,7 +85,7 @@ function showOpponentMessage() {
   //Message Array Variables:
   var outgoingArray = getCacheData(outgoingID, true);
   var incomingArray = getCacheData(incomingID, true);
-  var combinedArray = outgoingArray;
+  var combinedArray = outgoingArray.concat(incomingArray);
 
   //Element Variables:
   var box = document.getElementById('chatBox');
@@ -93,92 +93,61 @@ function showOpponentMessage() {
 
   //Contents Variables:
   var turns = 0;
-  var moves = 0;
   var chatContents = "";
 
+  //Sorts Array:
+  array = combinedArray;
+  sortMessages();
+  combinedArray = array;
+
   //Loops through Array:
-  mainLoop: while (turns < outgoingArray.length) {
-    //Gets the Outgoing Data:
-    var outgoingIndex = outgoingArray[turns].indexOf(outgoingKey) + outgoingKey.length;
-    var outgoingString = outgoingArray[turns].substring(outgoingIndex);
-    var outgoingStamp = JSON.parse(outgoingString);
-    
-    //Loop Variable:
-    var counts = 0;
+  mainLoop: while (turns < combinedArray.length) {
+    //Checks the Case:
+    if (combinedArray[turns].includes(outgoingKey)) {
+      //Gets the Message:
+      var index = combinedArray[turns].indexOf(outgoingKey);
+      var message = combinedArray[turns].substring(0, index);
 
-    //Loops through Array:
-    secondLoop: while (counts < incomingArray.length) {
-      //Gets the Incoming Data:
-      var incomingIndex = incomingArray[counts].indexOf(incomingKey) + incomingKey.length;
-      var incomingString = incomingArray[counts].substring(incomingIndex);
-      var incomingStamp = JSON.parse(incomingString);
-      console.log(incomingStamp + ", " + outgoingStamp);
-      
       //Checks the Case:
-      if (incomingStamp < outgoingStamp) {
-        //Adds the Value Before:
-        combinedArray = addBefore(combinedArray, outgoingArray[turns], incomingArray[counts]);
+      if (getCacheData(fullID, false) == null
+        && getCacheData(codeID, false) != null) {
+        //Adds to the Chat:
+        chatContents +=
+          "<div class='right'> <div class='chat space'> " +
+          message + "</div> </div>";
       }
 
-      else if (turns == outgoingArray.length-1) {
-        //Adds the Value:
-        combinedArray.push(incomingArray[counts]);
+      else if (getCacheData(codeID, false) != null) {
+        //Adds to the Chat:
+        chatContents +=
+          "<div class='left'> <div class='chatOther space'> " +
+          message + "</div> </div>";
       }
-      
-      counts++;
+    }
+
+    else if (combinedArray[turns].includes(incomingKey)) {
+      //Gets the Message:
+      var index = combinedArray[turns].indexOf(incomingKey);
+      var message = combinedArray[turns].substring(0, index);
+
+      //Checks the Case:
+      if (getCacheData(fullID, false) == null
+        && getCacheData(codeID, false) != null) {
+        //Adds to the Chat:
+        chatContents +=
+          "<div class='left'> <div class='chatOther space'> " +
+          message + "</div> </div>";
+      }
+
+      else if (getCacheData(codeID, false) != null) {
+        //Adds to the Chat:
+        chatContents +=
+          "<div class='right'> <div class='chat space'> " +
+          message + "</div> </div>";
+      }
     }
 
     turns++;
-  }
-
-  //Loops through Array:
-  thirdLoop: while (moves < combinedArray.length) {
-    //Checks the Case:
-    if (combinedArray[moves].includes(outgoingKey)) {
-      //Gets the Message:
-      var index = combinedArray[moves].indexOf(outgoingKey);
-      var message = combinedArray[moves].substring(0, index);
-
-      //Checks the Case:
-      if (getCacheData(fullID, false) == null
-        && getCacheData(codeID, false) != null) {
-        //Adds to the Chat:
-        chatContents += 
-          "<div class='right'> <div class='chat space'> " + 
-          message + "</div> </div>";
-      }
-
-      else if (getCacheData(codeID, false) != null) {
-        //Adds to the Chat:
-        chatContents += 
-          "<div class='left'> <div class='chatOther space'> " + 
-          message + "</div> </div>";
-      }
-    }
-
-    else if (combinedArray[moves].includes(incomingKey)) {
-      //Gets the Message:
-      var index = combinedArray[moves].indexOf(incomingKey);
-      var message = combinedArray[moves].substring(0, index);
-
-      //Checks the Case:
-      if (getCacheData(fullID, false) == null
-        && getCacheData(codeID, false) != null) {
-        //Adds to the Chat:
-        chatContents += 
-          "<div class='left'> <div class='chatOther space'> " + 
-          message + "</div> </div>";
-      }
-
-      else if (getCacheData(codeID, false) != null) {
-        //Adds to the Chat:
-        chatContents += 
-          "<div class='right'> <div class='chat space'> " + 
-          message + "</div> </div>";
-      }
-    }
-    
-    moves++;
   }
 
   //Sets the HTML:
@@ -342,33 +311,179 @@ function randomWord() {
   return words[index];
 }
 
-//Add Before Function:
-function addBefore(array, value, add) {
+//Sort Messages Function:
+function sortMessages() {
   //Loop Variables:
-  var localArray = [];
   var turns = 0;
-  var passed = false;
+  swaps = 0;
 
   //Loops through Array:
   mainLoop: while (turns < array.length) {
     //Checks the Case:
-    if (array[turns] == value && !passed) {
-      //Adds to the Local Array:
-      localArray.push(add);
-      localArray.push(array[turns]);
-      passed = true;
+    if (array[turns].includes(outgoingKey)) {
+      //Sets the Stamps:
+      var index = array[turns].indexOf(outgoingKey) + outgoingKey.length;
+      var string = array[turns].substring(index);
+      var stamp = JSON.parse(string);
+
+      //Checks the Case:
+      if (turns < array.length - 1) {
+        //Checks the Case:
+        if (array[turns].includes(outgoingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns + 1].indexOf(outgoingKey) + outgoingKey.length;
+          var stringNext = array[turns + 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp > stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns + 1];
+            array[turns + 1] = value;
+            swaps++;
+          }
+        }
+
+        else if (array[turns].includes(incomingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns + 1].indexOf(incomingKey) + incomingKey.length;
+          var stringNext = array[turns + 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp > stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns + 1];
+            array[turns + 1] = value;
+            swaps++;
+          }
+        }
+      }
+
+      else {
+        //Checks the Case:
+        if (array[turns].includes(outgoingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns - 1].indexOf(outgoingKey) + outgoingKey.length;
+          var stringNext = array[turns - 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp < stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns - 1];
+            array[turns - 1] = value;
+            swaps++;
+          }
+        }
+
+        else if (array[turns].includes(incomingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns - 1].indexOf(incomingKey) + incomingKey.length;
+          var stringNext = array[turns - 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp < stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns - 1];
+            array[turns - 1] = value;
+            swaps++;
+          }
+        }
+      }
     }
 
-    else {
-      //Adds to the Local Array:
-      localArray.push(array[turns]);
+    else if (array[turns].includes(incomingKey)) {
+      //Sets the Stamps:
+      var index = array[turns].indexOf(incomingKey) + incomingKey.length;
+      var string = array[turns].substring(index);
+      var stamp = JSON.parse(string);
+
+      //Checks the Case:
+      if (turns < array.length - 1) {
+        //Checks the Case:
+        if (array[turns].includes(outgoingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns + 1].indexOf(outgoingKey) + outgoingKey.length;
+          var stringNext = array[turns + 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp > stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns + 1];
+            array[turns + 1] = value;
+            swaps++;
+          }
+        }
+
+        else if (array[turns].includes(incomingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns + 1].indexOf(incomingKey) + incomingKey.length;
+          var stringNext = array[turns + 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp > stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns + 1];
+            array[turns + 1] = value;
+            swaps++;
+          }
+        }
+      }
+
+      else {
+        //Checks the Case:
+        if (array[turns].includes(outgoingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns - 1].indexOf(outgoingKey) + outgoingKey.length;
+          var stringNext = array[turns - 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp < stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns - 1];
+            array[turns - 1] = value;
+            swaps++;
+          }
+        }
+
+        else if (array[turns].includes(incomingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns - 1].indexOf(incomingKey) + incomingKey.length;
+          var stringNext = array[turns - 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp < stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns - 1];
+            array[turns - 1] = value;
+            swaps++;
+          }
+        }
+      }
     }
-    
+
     turns++;
   }
 
-  //Returns the Local Array:
-  return localArray;
+  //Checks the Case:
+  if (swaps != 0) {
+    //Recurses:
+    sortMessages();
+  }
 }
 
 //Generate Code Function:
