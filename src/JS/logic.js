@@ -99,7 +99,7 @@ function showOpponentMessage() {
   //Loops through Array:
   mainLoop: while (turns < outgoingArray.length) {
     //Gets the Outgoing Data:
-    var outgoingIndex = outgoingArray[counts].indexOf(outgoingKey) + outgoingKey.length;
+    var outgoingIndex = outgoingArray[turns].indexOf(outgoingKey) + outgoingKey.length;
     var outgoingString = outgoingArray[turns].substring(outgoingIndex);
     var outgoingStamp = JSON.parse(outgoingString);
     
@@ -109,8 +109,8 @@ function showOpponentMessage() {
     //Loops through Array:
     secondLoop: while (counts < incomingArray.length) {
       //Gets the Incoming Data:
-      var incomingIndex = incomingArray[turns].indexOf(incomingKey) + incomingKey.length;
-      var incomingString = incomingArray[turns].substring(incomingIndex);
+      var incomingIndex = incomingArray[counts].indexOf(incomingKey) + incomingKey.length;
+      var incomingString = incomingArray[counts].substring(incomingIndex);
       var incomingStamp = JSON.parse(incomingString);
       
       //Checks the Case:
