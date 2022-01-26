@@ -62,30 +62,14 @@ var words = [
   "Bat"
 ];
 
-/* GAME CONTROL FUNCTIONS */
-
-//Join URL Function:
-function joinURL() {
-  //Checks the Case:
-  if (getCacheData(codeID, false) == null) {
-    //Gets the URL Parameters:
-    var query = window.location.search;
-    var urlParameters = new URLSearchParams(query);
-
-    //Checks the URL Parameters:
-    if (urlParameters.has("c")) {
-      //Joins the Game:
-      joinGame(urlParameters.get("c"));
-    }
-  }
-}
+/* MESSAGE CONTROL FUNCTIONS */
 
 //Show Opponent Message Function:
 function showOpponentMessage() {
   //Message Array Variables:
   var outgoingArray = getCacheData(outgoingID, true);
   var incomingArray = getCacheData(incomingID, true);
-  var combinedArray = outgoingArray.concat(incomingArray);
+  var combinedArray = sortMessages(outgoingArray, incomingArray);
 
   //Element Variables:
   var box = document.getElementById('chatBox');
@@ -149,6 +133,85 @@ function showOpponentMessage() {
   box.innerHTML = chatContents;
   box.scrollTop = box.scrollHeight;
 }
+
+//Sort Messages Function:
+function sortMessages(array1, array2) {
+  //Loop Variables:
+  var outgo = array1, income = array2;
+  var mainArray = outgo;
+  var turns = 0;
+
+  //Loops through Array:
+  mainLoop: while (turns < outgo.length) {
+    //Gets the Outgoing Data:
+    var outgoingIndex = outgo[counts].indexOf(outgoingKey) + outgoingKey.length;
+    var outgoingString = outgo[turns].substring(outgoingIndex);
+    var outgoingStamp = JSON.parse(outgoingString);
+    
+    //Loop Variable:
+    var counts = 0;
+
+    //Loops through Array:
+    secondLoop: while (counts < income.length) {
+      //Gets the Incoming Data:
+      var incomingIndex = income[counts].indexOf(incomingKey) + incomingKey.length;
+      var incomingString = income[counts].substring(incomingIndex);
+      var incomingStamp = JSON.parse(incomingString);
+
+      //Checks the Case:
+      if (incomingStamp < outgoingStamp) {
+        //Checks the Case:
+        if (!mainArray.includes(income[turns])) {
+          //Adds the Elements Before:
+          mainArray = addBefore(mainArray, outgo[turns], income[counts]);
+        }
+      }
+
+      else if (turns == outgo.length-1) {
+        //Adds to the Main Array:
+        mainArray.push(income[counts]);
+      }
+      
+      counts++;
+    }
+    
+    turns++;
+  }
+
+  //Returns the Array:
+  return mainArray;
+}
+
+//Add Before Function:
+function addBefore(array, value, add) {
+  //Loop Variables:
+  var localArray = [];
+  var turns = 0;
+  var passed = false;
+
+  //Loops through Array:
+  mainLoop: while (turns < array.length) {
+    //Checks the Case:
+    if (array[turns] == value && !passed) {
+      //Adds to the Local Array:
+      localArray.push(add);
+      localArray.push(array[turns]);
+      passed = true;
+    }
+
+    else {
+      //Adds to the Local Array:
+      localArray.push(array[turns]);
+    }
+    
+    turns++;
+  }
+
+  //Returns the Local Array:
+  return localArray;
+}
+
+/* UI FUNCTIONS */
 
 //Show Control Message Function:
 function showControlMessage(message) {
@@ -323,6 +386,22 @@ function generateCode() {
 
   //Returns the Code:
   return code;
+}
+
+//Join URL Function:
+function joinURL() {
+  //Checks the Case:
+  if (getCacheData(codeID, false) == null) {
+    //Gets the URL Parameters:
+    var query = window.location.search;
+    var urlParameters = new URLSearchParams(query);
+
+    //Checks the URL Parameters:
+    if (urlParameters.has("c")) {
+      //Joins the Game:
+      joinGame(urlParameters.get("c"));
+    }
+  }
 }
 
 //Copy Join Link Function:
