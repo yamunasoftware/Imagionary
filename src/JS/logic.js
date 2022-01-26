@@ -124,6 +124,7 @@ function showOpponentMessage() {
         combinedArray.push(incomingArray[counts]);
       }
       
+      console.log(combinedArray);
       counts++;
     }
 
