@@ -136,9 +136,12 @@ function showOpponentMessage() {
 
 //Sort Messages Function:
 function sortMessages(array1, array2) {
-  //Loop Variables:
-  var outgo = array1, income = array2;
+  //Array Variables:
+  var outgo = array1
+  var income = array2;
   var mainArray = outgo;
+
+  //Loop Variable:
   var turns = 0;
 
   //Loops through Array:
