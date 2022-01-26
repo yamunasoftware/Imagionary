@@ -144,7 +144,7 @@ function sortMessages(array1, array2) {
   //Loops through Array:
   mainLoop: while (turns < outgo.length) {
     //Gets the Outgoing Data:
-    var outgoingIndex = outgo[counts].indexOf(outgoingKey) + outgoingKey.length;
+    var outgoingIndex = outgo[turns].indexOf(outgoingKey) + outgoingKey.length;
     var outgoingString = outgo[turns].substring(outgoingIndex);
     var outgoingStamp = JSON.parse(outgoingString);
     
@@ -161,7 +161,7 @@ function sortMessages(array1, array2) {
       //Checks the Case:
       if (incomingStamp < outgoingStamp) {
         //Checks the Case:
-        if (!mainArray.includes(income[turns])) {
+        if (!mainArray.includes(income[counts])) {
           //Adds the Elements Before:
           mainArray = addBefore(mainArray, outgo[turns], income[counts]);
         }
