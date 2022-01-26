@@ -95,7 +95,6 @@ function showOpponentMessage() {
     //Gets the Outgoing Data:
     var outgoingIndex = outgoingArray[turns].indexOf(outgoingKey) + outgoingKey.length;
     var outgoingString = outgoingArray[turns].substring(outgoingIndex);
-    console.log(outgoingArray);
     var outgoingStamp = JSON.parse(outgoingString);
     
     //Loop Variable:
