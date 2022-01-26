@@ -69,7 +69,7 @@ function showOpponentMessage() {
   //Message Array Variables:
   var outgoingArray = getCacheData(outgoingID, true);
   var incomingArray = getCacheData(incomingID, true);
-  var combinedArray = sortMessages(outgoingArray, incomingArray);
+  var combinedArray = outgoingArray;
 
   //Element Variables:
   var box = document.getElementById('chatBox');
@@ -80,7 +80,48 @@ function showOpponentMessage() {
   var chatContents = "";
 
   //Loops through Array:
-  mainLoop: while (turns < combinedArray.length) {
+  mainLoop: while (turns < outgoingArray.length) {
+    //Gets the Outgoing Data:
+    var outgoingIndex = outgoingArray[turns].indexOf(outgoingKey) + outgoingKey.length;
+    var outgoingString = outgoingArray[turns].substring(outgoingIndex);
+    console.log(outgoingArray);
+    var outgoingStamp = JSON.parse(outgoingString);
+    
+    //Loop Variable:
+    var counts = 0;
+
+    //Loops through Array:
+    secondLoop: while (counts < incomingArray.length) {
+      //Gets the Incoming Data:
+      var incomingIndex = incomingArray[counts].indexOf(incomingKey) + incomingKey.length;
+      var incomingString = incomingArray[counts].substring(incomingIndex);
+      var incomingStamp = JSON.parse(incomingString);
+
+      //Checks the Case:
+      if (incomingStamp < outgoingStamp) {
+        //Checks the Case:
+        if (!combinedArray.includes(incomingArray[counts])) {
+          //Adds the Elements Before:
+          combinedArray = addBefore(combinedArray, outgoingArray[turns], incomingArray[counts]);
+        }
+      }
+
+      else if (turns == outgoingArray.length - 1) {
+        //Adds to the Main Array:
+        mainArray.push(incomingArray[counts]);
+      }
+      
+      counts++;
+    }
+    
+    turns++;
+  }
+
+  //Resets the Counter:
+  turns = 0;
+
+  //Loops through Array:
+  uiLoop: while (turns < combinedArray.length) {
     //Checks the Case:
     if (combinedArray[turns].includes(outgoingKey)) {
       //Gets the Message:
@@ -132,58 +173,6 @@ function showOpponentMessage() {
   //Sets the HTML:
   box.innerHTML = chatContents;
   box.scrollTop = box.scrollHeight;
-}
-
-//Sort Messages Function:
-function sortMessages(array1, array2) {
-  //Array Variables:
-  var outgo = array1
-  var income = array2;
-  var mainArray = outgo;
-
-  //Loop Variable:
-  var turns = 0;
-
-  //Loops through Array:
-  mainLoop: while (turns < outgo.length) {
-    //Gets the Outgoing Data:
-    var outgoingIndex = outgo[turns].indexOf(outgoingKey) + outgoingKey.length;
-    var outgoingString = outgo[turns].substring(outgoingIndex);
-    console.log(outgo);
-    var outgoingStamp = JSON.parse(outgoingString);
-    
-    //Loop Variable:
-    var counts = 0;
-
-    //Loops through Array:
-    secondLoop: while (counts < income.length) {
-      //Gets the Incoming Data:
-      var incomingIndex = income[counts].indexOf(incomingKey) + incomingKey.length;
-      var incomingString = income[counts].substring(incomingIndex);
-      var incomingStamp = JSON.parse(incomingString);
-
-      //Checks the Case:
-      if (incomingStamp < outgoingStamp) {
-        //Checks the Case:
-        if (!mainArray.includes(income[counts])) {
-          //Adds the Elements Before:
-          mainArray = addBefore(mainArray, outgo[turns], income[counts]);
-        }
-      }
-
-      else if (turns == outgo.length-1) {
-        //Adds to the Main Array:
-        mainArray.push(income[counts]);
-      }
-      
-      counts++;
-    }
-    
-    turns++;
-  }
-
-  //Returns the Array:
-  return mainArray;
 }
 
 //Add Before Function:
