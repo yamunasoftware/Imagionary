@@ -102,7 +102,7 @@ function showOpponentMessage() {
         //Checks the Case:
         if (!combinedArray.includes(incomingArray[counts])) {
           //Adds the Elements Before:
-          combinedArray = addBefore(combinedArray, outgoingArray[turns], incomingArray[counts]);
+          //combinedArray = addBefore(combinedArray, outgoingArray[turns], incomingArray[counts]);
         }
       }
 
