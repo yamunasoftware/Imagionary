@@ -155,6 +155,181 @@ function showOpponentMessage() {
   box.scrollTop = box.scrollHeight;
 }
 
+//Sort Messages Function:
+function sortMessages() {
+  //Loop Variables:
+  var turns = 0;
+  swaps = 0;
+
+  //Loops through Array:
+  mainLoop: while (turns < array.length) {
+    //Checks the Case:
+    if (array[turns].includes(outgoingKey)) {
+      //Sets the Stamps:
+      var index = array[turns].indexOf(outgoingKey) + outgoingKey.length;
+      var string = array[turns].substring(index);
+      var stamp = JSON.parse(string);
+
+      //Checks the Case:
+      if (turns < array.length - 1) {
+        //Checks the Case:
+        if (array[turns + 1].includes(outgoingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns + 1].indexOf(outgoingKey) + outgoingKey.length;
+          var stringNext = array[turns + 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp > stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns + 1];
+            array[turns + 1] = value;
+            swaps++;
+          }
+        }
+
+        else if (array[turns + 1].includes(incomingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns + 1].indexOf(incomingKey) + incomingKey.length;
+          var stringNext = array[turns + 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp > stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns + 1];
+            array[turns + 1] = value;
+            swaps++;
+          }
+        }
+      }
+
+      else if (turns == array.length - 1) {
+        //Checks the Case:
+        if (array[turns - 1].includes(outgoingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns - 1].indexOf(outgoingKey) + outgoingKey.length;
+          var stringNext = array[turns - 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp < stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns - 1];
+            array[turns - 1] = value;
+            swaps++;
+          }
+        }
+
+        else if (array[turns - 1].includes(incomingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns - 1].indexOf(incomingKey) + incomingKey.length;
+          var stringNext = array[turns - 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp < stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns - 1];
+            array[turns - 1] = value;
+            swaps++;
+          }
+        }
+      }
+    }
+
+    else if (array[turns].includes(incomingKey)) {
+      //Sets the Stamps:
+      var index = array[turns].indexOf(incomingKey) + incomingKey.length;
+      var string = array[turns].substring(index);
+      var stamp = JSON.parse(string);
+
+      //Checks the Case:
+      if (turns < array.length - 1) {
+        //Checks the Case:
+        if (array[turns + 1].includes(outgoingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns + 1].indexOf(outgoingKey) + outgoingKey.length;
+          var stringNext = array[turns + 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp > stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns + 1];
+            array[turns + 1] = value;
+            swaps++;
+          }
+        }
+
+        else if (array[turns + 1].includes(incomingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns + 1].indexOf(incomingKey) + incomingKey.length;
+          var stringNext = array[turns + 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp > stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns + 1];
+            array[turns + 1] = value;
+            swaps++;
+          }
+        }
+      }
+
+      else if (turns == array.length - 1) {
+        //Checks the Case:
+        if (array[turns - 1].includes(outgoingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns - 1].indexOf(outgoingKey) + outgoingKey.length;
+          var stringNext = array[turns - 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp < stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns - 1];
+            array[turns - 1] = value;
+            swaps++;
+          }
+        }
+
+        else if (array[turns - 1].includes(incomingKey)) {
+          //Sets the Stamps:
+          var indexNext = array[turns - 1].indexOf(incomingKey) + incomingKey.length;
+          var stringNext = array[turns - 1].substring(indexNext);
+          var stampNext = JSON.parse(stringNext);
+
+          //Checks the Case:
+          if (stamp < stampNext) {
+            //Swaps:
+            var value = array[turns];
+            array[turns] = array[turns - 1];
+            array[turns - 1] = value;
+            swaps++;
+          }
+        }
+      }
+    }
+
+    turns++;
+  }
+
+  //Checks the Case:
+  if (swaps != 0) {
+    //Recurses:
+    sortMessages();
+  }
+}
+
 //Show Control Message Function:
 function showControlMessage(message) {
   //Sets the Control Message:
@@ -309,181 +484,6 @@ function randomWord() {
   var max = words.length - 1;
   var index = Math.round((Math.random() * max));
   return words[index];
-}
-
-//Sort Messages Function:
-function sortMessages() {
-  //Loop Variables:
-  var turns = 0;
-  swaps = 0;
-
-  //Loops through Array:
-  mainLoop: while (turns < array.length) {
-    //Checks the Case:
-    if (array[turns].includes(outgoingKey)) {
-      //Sets the Stamps:
-      var index = array[turns].indexOf(outgoingKey) + outgoingKey.length;
-      var string = array[turns].substring(index);
-      var stamp = JSON.parse(string);
-
-      //Checks the Case:
-      if (turns < array.length - 1) {
-        //Checks the Case:
-        if (array[turns + 1].includes(outgoingKey)) {
-          //Sets the Stamps:
-          var indexNext = array[turns + 1].indexOf(outgoingKey) + outgoingKey.length;
-          var stringNext = array[turns + 1].substring(indexNext);
-          var stampNext = JSON.parse(stringNext);
-
-          //Checks the Case:
-          if (stamp > stampNext) {
-            //Swaps:
-            var value = array[turns];
-            array[turns] = array[turns + 1];
-            array[turns + 1] = value;
-            swaps++;
-          }
-        }
-
-        else if (array[turns + 1].includes(incomingKey)) {
-          //Sets the Stamps:
-          var indexNext = array[turns + 1].indexOf(incomingKey) + incomingKey.length;
-          var stringNext = array[turns + 1].substring(indexNext);
-          var stampNext = JSON.parse(stringNext);
-
-          //Checks the Case:
-          if (stamp > stampNext) {
-            //Swaps:
-            var value = array[turns];
-            array[turns] = array[turns + 1];
-            array[turns + 1] = value;
-            swaps++;
-          }
-        }
-      }
-
-      else {
-        //Checks the Case:
-        if (array[turns - 1].includes(outgoingKey)) {
-          //Sets the Stamps:
-          var indexNext = array[turns - 1].indexOf(outgoingKey) + outgoingKey.length;
-          var stringNext = array[turns - 1].substring(indexNext);
-          var stampNext = JSON.parse(stringNext);
-
-          //Checks the Case:
-          if (stamp < stampNext) {
-            //Swaps:
-            var value = array[turns];
-            array[turns] = array[turns - 1];
-            array[turns - 1] = value;
-            swaps++;
-          }
-        }
-
-        else if (array[turns - 1].includes(incomingKey)) {
-          //Sets the Stamps:
-          var indexNext = array[turns - 1].indexOf(incomingKey) + incomingKey.length;
-          var stringNext = array[turns - 1].substring(indexNext);
-          var stampNext = JSON.parse(stringNext);
-
-          //Checks the Case:
-          if (stamp < stampNext) {
-            //Swaps:
-            var value = array[turns];
-            array[turns] = array[turns - 1];
-            array[turns - 1] = value;
-            swaps++;
-          }
-        }
-      }
-    }
-
-    else if (array[turns].includes(incomingKey)) {
-      //Sets the Stamps:
-      var index = array[turns].indexOf(incomingKey) + incomingKey.length;
-      var string = array[turns].substring(index);
-      var stamp = JSON.parse(string);
-
-      //Checks the Case:
-      if (turns < array.length - 1) {
-        //Checks the Case:
-        if (array[turns + 1].includes(outgoingKey)) {
-          //Sets the Stamps:
-          var indexNext = array[turns + 1].indexOf(outgoingKey) + outgoingKey.length;
-          var stringNext = array[turns + 1].substring(indexNext);
-          var stampNext = JSON.parse(stringNext);
-
-          //Checks the Case:
-          if (stamp > stampNext) {
-            //Swaps:
-            var value = array[turns];
-            array[turns] = array[turns + 1];
-            array[turns + 1] = value;
-            swaps++;
-          }
-        }
-
-        else if (array[turns + 1].includes(incomingKey)) {
-          //Sets the Stamps:
-          var indexNext = array[turns + 1].indexOf(incomingKey) + incomingKey.length;
-          var stringNext = array[turns + 1].substring(indexNext);
-          var stampNext = JSON.parse(stringNext);
-
-          //Checks the Case:
-          if (stamp > stampNext) {
-            //Swaps:
-            var value = array[turns];
-            array[turns] = array[turns + 1];
-            array[turns + 1] = value;
-            swaps++;
-          }
-        }
-      }
-
-      else {
-        //Checks the Case:
-        if (array[turns - 1].includes(outgoingKey)) {
-          //Sets the Stamps:
-          var indexNext = array[turns - 1].indexOf(outgoingKey) + outgoingKey.length;
-          var stringNext = array[turns - 1].substring(indexNext);
-          var stampNext = JSON.parse(stringNext);
-
-          //Checks the Case:
-          if (stamp < stampNext) {
-            //Swaps:
-            var value = array[turns];
-            array[turns] = array[turns - 1];
-            array[turns - 1] = value;
-            swaps++;
-          }
-        }
-
-        else if (array[turns - 1].includes(incomingKey)) {
-          //Sets the Stamps:
-          var indexNext = array[turns - 1].indexOf(incomingKey) + incomingKey.length;
-          var stringNext = array[turns - 1].substring(indexNext);
-          var stampNext = JSON.parse(stringNext);
-
-          //Checks the Case:
-          if (stamp < stampNext) {
-            //Swaps:
-            var value = array[turns];
-            array[turns] = array[turns - 1];
-            array[turns - 1] = value;
-            swaps++;
-          }
-        }
-      }
-    }
-
-    turns++;
-  }
-
-  //Checks the Case:
-  if (swaps != 0) {
-    //Recurses:
-    sortMessages();
-  }
 }
 
 //Generate Code Function:
