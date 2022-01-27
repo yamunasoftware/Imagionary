@@ -198,7 +198,7 @@ function joinGame(code) {
 
   else {
     //Reloads the Page:
-    window.location.reload();
+    window.location.href = "https://imagionary.netlify.app";
   }
 }
 
