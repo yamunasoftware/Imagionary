@@ -106,8 +106,14 @@ function createGame() {
           setCacheData(outgoingID, outgoing, true);
           setCacheData(incomingID, incoming, true);
 
-          //Reloads Page:
-          window.location.href = "https://imagionary.netlify.app";
+          //Control Functions:
+          showControls();
+          showDrawControls();
+          showMessage();
+          showWord();
+          checkDisabled();
+          disableLoading();
+          showDisabledMessage();
         })
         .catch((error) => {
           //Error Message:
@@ -149,7 +155,15 @@ function joinGame(code) {
           }).then((docRef) => {
             //Gets the Data:
             getGame();
-            window.location.href = "https://imagionary.netlify.app";
+
+            //Control Functions:
+            showControls();
+            showDrawControls();
+            showMessage();
+            showWord();
+            checkDisabled();
+            disableLoading();
+            showDisabledMessage();
           })
             .catch((error) => {
               //Error Message:
@@ -184,7 +198,7 @@ function joinGame(code) {
 
   else {
     //Reloads the Page:
-    window.location.href = "https://imagionary.netlify.app";
+    window.location.reload();
   }
 }
 

@@ -304,7 +304,7 @@ function showResult() {
       clearCacheData();
       setTimeout(function () {
         //Reloads Page:
-        window.location.href = "https://imagionary.netlify.app";
+        window.location.reload();
       }, 1000);
     }
 
@@ -317,7 +317,7 @@ function showResult() {
       clearCacheData();
       setTimeout(function () {
         //Reloads Page:
-        window.location.href = "https://imagionary.netlify.app";
+        window.location.reload();
       }, 1000);
     }
   }
@@ -335,7 +335,7 @@ function showResult() {
       clearCacheData();
       setTimeout(function () {
         //Reloads Page:
-        window.location.href = "https://imagionary.netlify.app";
+        window.location.reload();
       }, 1000);
     }
 
@@ -348,7 +348,7 @@ function showResult() {
       clearCacheData();
       setTimeout(function () {
         //Reloads Page:
-        window.location.href = "https://imagionary.netlify.app";
+        window.location.reload();
       }, 1000);
     }
   }
