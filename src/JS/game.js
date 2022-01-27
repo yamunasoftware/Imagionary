@@ -55,25 +55,8 @@ window.onload = function () {
     x = Math.round(e.clientX - rect.left);
     y = Math.round(e.clientY - rect.top);
 
-    //Checks the Case:
-    if (getCacheData(fullID, false) == null
-      && getCacheData(codeID, false) != null
-      && getCacheData(disableID, false) == null
-      && down) {
-      //Disables Scrolling:
-      document.getElementById('container').style.overflow = "hidden";
-      document.body.style.overflow = "hidden";
-    }
-
     //Draws on the Screen:
     draw(true);
-  });
-
-  //Mouse Leave Event:
-  canvas.addEventListener("mouseup", function (e) {
-    //Enables Scrolling:
-    document.getElementById('container').style.overflow = "visible";
-    document.body.style.overflow = "visible";
   });
 
   /* Touch Events */
@@ -84,15 +67,6 @@ window.onload = function () {
     var rect = canvas.getBoundingClientRect();
     x = Math.round(e.touches[0].clientX - rect.left);
     y = Math.round(e.touches[0].clientY - rect.top);
-
-    //Checks the Case:
-    if (getCacheData(fullID, false) == null
-      && getCacheData(codeID, false) != null
-      && getCacheData(disableID, false) == null) {
-      //Disables Scrolling:
-      document.getElementById('container').style.overflow = "hidden";
-      document.body.style.overflow = "hidden";
-    }
 
     //Draws on the Screen:
     draw(false);
@@ -105,24 +79,8 @@ window.onload = function () {
     x = Math.round(e.touches[0].clientX - rect.left);
     y = Math.round(e.touches[0].clientY - rect.top);
 
-    //Checks the Case:
-    if (getCacheData(fullID, false) == null
-      && getCacheData(codeID, false) != null
-      && getCacheData(disableID, false) == null) {
-      //Disables Scrolling:
-      document.getElementById('container').style.overflow = "hidden";
-      document.body.style.overflow = "hidden";
-    }
-
     //Draws on the Screen:
     draw(false);
-  });
-
-  //Touch End Event:
-  canvas.addEventListener("touchend", function (e) {
-    //Enables Scrolling:
-    document.getElementById('container').style.overflow = "visible";
-    document.body.style.overflow = "visible";
   });
 
   /* Key Events */
