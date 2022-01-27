@@ -195,11 +195,6 @@ function joinGame(code) {
       clearCacheData();
     }
   }
-
-  else {
-    //Reloads the Page:
-    window.location.href = "https://imagionary.netlify.app";
-  }
 }
 
 //Delete Game Function:
