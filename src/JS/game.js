@@ -19,6 +19,7 @@ window.onload = function () {
   /* Game Controls */
 
   //Gets the Game:
+  getURL();
   getGame();
 
   //Control Functions:

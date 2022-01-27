@@ -289,7 +289,8 @@ function showMessage() {
     && getCacheData(codeID, false) != null) {
     //Sets the Screen Data:
     currentCode = getCacheData(codeID, false);
-    document.getElementById('gameCode').innerHTML = currentCode;
+    document.getElementById('gameCode').innerHTML = currentCode  + 
+      "&nbsp; <button onclick='copyURL(" + currentCode + ");'>  Copy </button>";
   }
 
   else if (getCacheData(codeID, false) != null) {
@@ -400,6 +401,30 @@ function generateCode() {
 
   //Returns the Code:
   return code;
+}
+
+//Join URL Function:
+function getURL() {
+  //Checks the Case:
+  if (getCacheData(codeID, false) == null) {
+    //Gets the URL Parameters:
+    var query = window.location.search;
+    var urlParameters = new URLSearchParams(query);
+
+    //Checks the URL Parameters:
+    if (urlParameters.has("c")) {
+      //Sets the Value:
+      document.getElementById('codeInput').value = urlParameters.get("c");
+    }
+  }
+}
+
+//Copy Join Link Function:
+function copyURL(code) {
+  //Sets the Link:
+  var link = "https://imagionary.netlify.app/?c=" + code;
+  navigator.clipboard.writeText(link);
+  document.getElementById('gameCode').innerHTML = "Copied";
 }
 
 //Enable Loading Function:
