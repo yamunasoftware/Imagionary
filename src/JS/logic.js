@@ -290,7 +290,7 @@ function showMessage() {
     //Sets the Screen Data:
     currentCode = getCacheData(codeID, false);
     document.getElementById('gameCode').innerHTML = currentCode  + 
-      "&nbsp; <button onclick='copyURL(" + currentCode + ");'>  Copy </button>";
+      "&nbsp; <button onclick='copyURL();'>  Copy </button>";
   }
 
   else if (getCacheData(codeID, false) != null) {
@@ -420,9 +420,12 @@ function getURL() {
 }
 
 //Copy Join Link Function:
-function copyURL(code) {
+function copyURL() {
   //Sets the Link:
-  var link = "https://imagionary.netlify.app/?c=" + code;
+  currentCode = getCacheData(codeID, false);
+  var link = "https://imagionary.netlify.app/?c=" + currentCode;
+
+  //Copies to Clipboard:
   navigator.clipboard.writeText(link);
   document.getElementById('gameCode').innerHTML = "Copied";
 }
