@@ -79,52 +79,65 @@ function showOpponentMessage() {
   var turns = 0;
   var chatContents = "";
 
-  //Loops through Array:
-  mainLoop: while (turns < outgoingArray.length) {
-    //Adds to the Combined Array:
-    combinedArray.push(outgoingArray[turns]);
-    
-    turns++;
-  }
+  //Checks the Case:
+  if (outgoingArray.length > 0) {
+    //Loops through Array:
+    mainLoop: while (turns < outgoingArray.length) {
+      //Adds to the Combined Array:
+      combinedArray.push(outgoingArray[turns]);
 
-  //Resets the Counter:
-  turns = 0;
+      turns++;
+    }
 
-  //Loops through Array:
-  mainLoop: while (turns < outgoingArray.length) {
-    //Gets the Outgoing Data:
-    var outgoingIndex = outgoingArray[turns].indexOf(outgoingKey) + outgoingKey.length;
-    var outgoingString = outgoingArray[turns].substring(outgoingIndex);
-    var outgoingStamp = JSON.parse(outgoingString);
-    
-    //Loop Variable:
-    var counts = 0;
+    //Resets the Counter:
+    turns = 0;
 
     //Loops through Array:
-    secondLoop: while (counts < incomingArray.length) {
-      //Gets the Incoming Data:
-      var incomingIndex = incomingArray[counts].indexOf(incomingKey) + incomingKey.length;
-      var incomingString = incomingArray[counts].substring(incomingIndex);
-      var incomingStamp = JSON.parse(incomingString);
+    secondLoop: while (turns < outgoingArray.length) {
+      //Gets the Outgoing Data:
+      var outgoingIndex = outgoingArray[turns].indexOf(outgoingKey) + outgoingKey.length;
+      var outgoingString = outgoingArray[turns].substring(outgoingIndex);
+      var outgoingStamp = JSON.parse(outgoingString);
 
-      //Checks the Case:
-      if (incomingStamp < outgoingStamp) {
+      //Loop Variable:
+      var counts = 0;
+
+      //Loops through Array:
+      thirdLoop: while (counts < incomingArray.length) {
+        //Gets the Incoming Data:
+        var incomingIndex = incomingArray[counts].indexOf(incomingKey) + incomingKey.length;
+        var incomingString = incomingArray[counts].substring(incomingIndex);
+        var incomingStamp = JSON.parse(incomingString);
+
         //Checks the Case:
-        if (!combinedArray.includes(incomingArray[counts])) {
-          //Adds the Elements Before:
-          combinedArray = addBefore(combinedArray, outgoingArray[turns], incomingArray[counts]);
+        if (incomingStamp < outgoingStamp) {
+          //Checks the Case:
+          if (!combinedArray.includes(incomingArray[counts])) {
+            //Adds the Elements Before:
+            combinedArray = addBefore(combinedArray, outgoingArray[turns], incomingArray[counts]);
+          }
         }
+
+        else if (turns == outgoingArray.length - 1) {
+          //Adds to the Main Array:
+          combinedArray.push(incomingArray[counts]);
+        }
+
+        counts++;
       }
 
-      else if (turns == outgoingArray.length - 1) {
-        //Adds to the Main Array:
-        combinedArray.push(incomingArray[counts]);
-      }
-      
-      counts++;
+      turns++;
     }
-    
-    turns++;
+  }
+
+  else {
+    //Loops through Array:
+    incomingLoop: while (turns < incomingArray.length) {
+      //Adds to the Combined Array:
+      combinedArray.push(incomingArray[turns]);
+      
+      turns++;
+    }
   }
 
   //Resets the Counter:
@@ -206,7 +219,7 @@ function addBefore(array, value, add) {
       //Adds to the Local Array:
       localArray.push(array[turns]);
     }
-    
+
     turns++;
   }
 
