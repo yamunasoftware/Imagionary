@@ -91,10 +91,10 @@
       <!-- Draw Container -->
       <div id="drawContainer" style="display: none;" class="style">
         <!-- Draw Controls -->
-        &nbsp; <button onclick="sendGame(); disableActions(); showControlMessage('Saved');"> Save </button>
+        &nbsp; <button onclick="sendGame(); showControlMessage('Saved');"> Save </button>
         &nbsp; <button onclick="erase(); showControlMessage('Erased');"> Erase </button>
         &nbsp; <button onclick="window.location.reload();"> Update </button>
-        &nbsp; <button onclick="clearCacheData(); window.location.href = 'https://imagionary.netlify.app';"> Quit </button>
+        &nbsp; <button onclick="clearCacheData(); window.location.reload();"> Quit </button>
       </div>
 
       <!-- Guess Container -->
@@ -103,7 +103,7 @@
         <input id="guessInput" />
         &nbsp; <button onclick="sendGuess(document.getElementById('guessInput').value);"> Save </button>
         &nbsp; <button onclick="window.location.reload();"> Update </button>
-        &nbsp; <button onclick="clearCacheData(); window.location.href = 'https://imagionary.netlify.app';"> Quit </button>
+        &nbsp; <button onclick="clearCacheData(); window.location.reload();"> Quit </button>
       </div>
 
       <!-- Game Control Message -->

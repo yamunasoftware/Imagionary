@@ -276,9 +276,7 @@ function showMessage() {
     && getCacheData(codeID, false) != null) {
     //Sets the Screen Data:
     currentCode = getCacheData(codeID, false);
-    document.getElementById('gameCode').innerHTML =
-      currentCode + "&nbsp; &nbsp; <button onclick='copyJoinLink(" +
-      JSON.stringify(currentCode) + ");'> Copy </button>";
+    document.getElementById('gameCode').innerHTML = currentCode;
   }
 
   else if (getCacheData(codeID, false) != null) {
@@ -317,7 +315,7 @@ function showResult() {
       clearCacheData();
       setTimeout(function () {
         //Reloads Page:
-        window.location.href = "https://imagionary.netlify.app";
+        window.location.reload();
       }, 1000);
     }
   }
@@ -348,7 +346,7 @@ function showResult() {
       clearCacheData();
       setTimeout(function () {
         //Reloads Page:
-        window.location.href = "https://imagionary.netlify.app";
+        window.location.reload();
       }, 1000);
     }
   }
@@ -389,56 +387,6 @@ function generateCode() {
 
   //Returns the Code:
   return code;
-}
-
-//Join URL Function:
-function joinURL() {
-  //Checks the Case:
-  if (getCacheData(codeID, false) == null) {
-    //Gets the URL Parameters:
-    var query = window.location.search;
-    var urlParameters = new URLSearchParams(query);
-
-    //Checks the URL Parameters:
-    if (urlParameters.has("c")) {
-      //Joins the Game:
-      joinGame(urlParameters.get("c"));
-    }
-  }
-}
-
-//Copy Join Link Function:
-function copyJoinLink(code) {
-  //Sets the Link:
-  var link = "https://imagionary.netlify.app/?c=" + code;
-  navigator.clipboard.writeText(link);
-  document.getElementById('gameCode').innerHTML = "Copied";
-}
-
-//Disable Actions Function:
-function disableActions() {
-  //Disables All Action Buttons:
-  document.getElementById('drawContainer').style.display = "none";
-  document.getElementById('guessContainer').style.display = "none";
-  setCacheData(disableID, disable, true);
-}
-
-//Show Disabled Message:
-function showDisabledMessage() {
-  //Checks the Case:
-  if (getCacheData(disableID, false) != null) {
-    //Shows the Message:
-    showControlMessage("Saved");
-  }
-}
-
-//Check Disabled Function:
-function checkDisabled() {
-  //Checks the Case:
-  if (getCacheData(disableID, false) != null) {
-    //Disables Actions:
-    disableActions();
-  }
 }
 
 //Enable Loading Function:

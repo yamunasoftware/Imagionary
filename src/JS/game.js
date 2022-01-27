@@ -18,17 +18,12 @@ var strokes = [];
 window.onload = function () {
   /* Game Controls */
 
-  //URL Join:
-  joinURL();
-
   //Control Functions:
   showControls();
   showDrawControls();
   showMessage();
   showWord();
-  checkDisabled();
   disableLoading();
-  showDisabledMessage();
 
   //Gets the Game:
   getGame();
@@ -142,7 +137,6 @@ window.onload = function () {
       else if (getCacheData(disableID, false) == null) {
         //Sends the Game:
         sendGame(); 
-        disableActions(); 
         showControlMessage('Saved');
       }
     }

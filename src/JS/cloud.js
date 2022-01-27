@@ -111,9 +111,7 @@ function createGame() {
           showDrawControls();
           showMessage();
           showWord();
-          checkDisabled();
           disableLoading();
-          showDisabledMessage();
         })
         .catch((error) => {
           //Error Message:
@@ -161,9 +159,7 @@ function joinGame(code) {
             showDrawControls();
             showMessage();
             showWord();
-            checkDisabled();
             disableLoading();
-            showDisabledMessage();
           })
             .catch((error) => {
               //Error Message:
@@ -277,11 +273,6 @@ function sendGuess(attempt) {
       database.collection(collectionName).doc(currentCode).update({
         guess: getCacheData(guessID, false)
       })
-        .then((docRef) => {
-          //Disables Actions:
-          disableActions();
-          showControlMessage("Saved");
-        })
         .then((docRef) => {
           //Checks for Win:
           disableLoading();
