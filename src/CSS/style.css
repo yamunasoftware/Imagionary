@@ -8,7 +8,7 @@ html, body {
   scroll-behavior: smooth;
   font-family: "font-medium", Arial, Helvetica, sans-serif;
   font-size: 20px;
-  color: #EEEEEE;
+  color: #FFFFFF;
 }
 
 #container {
@@ -18,7 +18,7 @@ html, body {
   background-color: #000000;
   font-family: "font-medium", Arial, Helvetica, sans-serif;
   font-size: 20px;
-  color: #EEEEEE;
+  color: #FFFFFF;
 }
 
 /* SCROLLING */
@@ -33,11 +33,11 @@ html, body {
 }
  
 ::-webkit-scrollbar-thumb {
-  background: #FFBF00; 
+  background: #8A00FF; 
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #FFFC48; 
+  background: #BF00FF; 
 }
 
 ::-webkit-scrollbar-corner {
@@ -52,9 +52,9 @@ html, body {
   align-content: center;
 }
 
-.canvas {
+.border {
+  border: 5px solid #8A00FF;
   border-radius: 5px;
-  border: none;
 }
 
 .no-decoration {
@@ -99,7 +99,7 @@ html, body {
   padding: 5px;
   border-radius: 10px;
   border: none;
-  background-color: #FFFC48;
+  background-color: #BF00FF;
   color: #000000;
 }
 
@@ -108,7 +108,7 @@ html, body {
   padding: 5px;
   border-radius: 10px;
   border: none;
-  background-color: #FFBF00;
+  background-color: #8A00FF;
   color: #000000;
 }
 
@@ -120,27 +120,27 @@ button {
   font-size: 20px;
   border: none;
   border-radius: 5px;
-  background-color: #FFBF00;
+  background-color: #8A00FF;
   color: #000000;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #FFFC48;
+  background-color: #BF00FF;
 }
 
 input {
   width: 150px;
   margin-bottom: 20px;
   font-size: 20px;
-  border: 5px solid #FFBF00;
+  border: 5px solid #8A00FF;
   border-radius: 5px;
   cursor: pointer;
   font-family: "font-bold", Arial, Helvetica, sans-serif;
 }
 
 input:focus {
-  border: 5px solid #FFFC48;
+  border: 5px solid #BF00FF;
   outline: none;
 }
 
@@ -159,8 +159,8 @@ input:focus {
   height: 64px;
   margin: 8px;
   border-radius: 50%;
-  border: 6px solid #FFBF00;
-  border-color: #FFBF00 transparent #FFBF00 transparent;
+  border: 6px solid #8A00FF;
+  border-color: #8A00FF transparent #8A00FF transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 
