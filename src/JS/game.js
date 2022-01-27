@@ -18,15 +18,15 @@ var strokes = [];
 window.onload = function () {
   /* Game Controls */
 
+  //Gets the Game:
+  getGame();
+
   //Control Functions:
   showControls();
   showDrawControls();
   showMessage();
   showWord();
   disableLoading();
-
-  //Gets the Game:
-  getGame();
 
   /* Game Setup */
 
@@ -104,8 +104,7 @@ window.onload = function () {
       if (control && z) {
         //Checks the Case:
         if (getCacheData(fullID, false) == null
-          && getCacheData(codeID, false) != null
-          && getCacheData(disableID, false) == null) {
+          && getCacheData(codeID, false) != null) {
           //Erases:
           erase();
           showControlMessage("Erased");
@@ -134,7 +133,7 @@ window.onload = function () {
         sendGuess(this.document.getElementById('guessInput').value);
       }
 
-      else if (getCacheData(disableID, false) == null) {
+      else {
         //Sends the Game:
         sendGame(); 
         showControlMessage('Saved');
@@ -158,8 +157,7 @@ window.onload = function () {
 function draw(click) {
   //Checks the Case:
   if (getCacheData(fullID, false) == null
-    && getCacheData(codeID, false) != null
-    && getCacheData(disableID, false) == null) {
+    && getCacheData(codeID, false) != null) {
     //Checks the Case:
     if (click) {
       //Checks the Case:
@@ -182,8 +180,7 @@ function draw(click) {
 function erase() {
   //Checks the Case:
   if (getCacheData(fullID, false) == null
-    && getCacheData(codeID, false) != null
-    && getCacheData(disableID, false) == null) {
+    && getCacheData(codeID, false) != null) {
     //Erase Canvas:
     square('#FFFFFF', 0, 0, canvas.width);
     x = 0;
