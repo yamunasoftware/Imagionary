@@ -135,11 +135,11 @@ input {
   font-size: 20px;
   border: 5px solid #8A00FF;
   border-radius: 5px;
-  cursor: pointer;
+  cursor: help;
   font-family: "font-bold", Arial, Helvetica, sans-serif;
 }
 
-input:focus {
+input:hover, input:focus {
   border: 5px solid #BF00FF;
   outline: none;
 }
