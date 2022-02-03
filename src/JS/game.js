@@ -79,6 +79,14 @@ window.onload = function () {
     draw(false);
   });
 
+  /* Touch Default Events */
+
+  //Disables Default Events:
+  canvas.addEventListener("touchstart", function(e) {e.preventDefault()});
+  canvas.addEventListener("touchmove", function(e) {e.preventDefault()});
+  canvas.addEventListener("touchend", function(e) {e.preventDefault()});
+  canvas.addEventListener("touchcancel", function(e) {e.preventDefault()});
+
   /* Key Events */
 
   //Keydown Array Event:
@@ -149,13 +157,6 @@ window.onload = function () {
     control = false;
     z = false;
     q = false;
-  });
-
-  /* Focus Events */
-
-  //Disable Scroll:
-  canvas.focus({
-    preventScroll: true
   });
 }
 
