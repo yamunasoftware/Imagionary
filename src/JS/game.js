@@ -136,7 +136,7 @@ window.onload = function () {
 
       else {
         //Sends the Game:
-        sendGame(); 
+        sendGame();
         showControlMessage('Saved');
       }
     }
@@ -149,6 +149,13 @@ window.onload = function () {
     control = false;
     z = false;
     q = false;
+  });
+
+  /* Focus Events */
+
+  //Disable Scroll:
+  canvas.focus({
+    preventScroll: true
   });
 }
 
