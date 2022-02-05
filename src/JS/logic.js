@@ -160,19 +160,28 @@ function showOpponentMessage() {
       var timeStamp = getFormattedStamp(ago);
 
       //Checks the Case:
+      if (turns != combinedArray.length-1) {
+        //Checks the Case:
+        if (combinedArray[turns+1].includes(outgoingKey)) {
+          //Sets the Timestamp:
+          timeStamp = "";
+        }
+      }
+
+      //Checks the Case:
       if (getCacheData(fullID, false) == null
         && getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents +=
           "<div class='right chat-space'> <div class='chat'> " +
-          message + "<div class='stamp'>" + timeStamp + "</div> </div> </div>";
+          message + "</div> <div class='stamp'>" + timeStamp + "</div> </div>";
       }
 
       else if (getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents +=
           "<div class='left chat-space'> <div class='chatOther'> " +
-          message + "<div class='stamp'>" + timeStamp + "</div> </div> </div>";
+          message + "</div> <div class='stamp'>" + timeStamp + "</div> </div>";
       }
     }
 
@@ -190,19 +199,28 @@ function showOpponentMessage() {
       var timeStamp = getFormattedStamp(ago);
 
       //Checks the Case:
+      if (turns != combinedArray.length-1) {
+        //Checks the Case:
+        if (combinedArray[turns+1].includes(incomingKey)) {
+          //Sets the Timestamp:
+          timeStamp = "";
+        }
+      }
+
+      //Checks the Case:
       if (getCacheData(fullID, false) == null
         && getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents +=
           "<div class='left chat-space'> <div class='chatOther'> " +
-          message + "<div class='stamp'>" + timeStamp + "</div> </div> </div>";
+          message + "</div> <div class='stamp'>" + timeStamp + "</div> </div>";
       }
 
       else if (getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents +=
           "<div class='right chat-space'> <div class='chat'> " +
-          message + "<div class='stamp'>" + timeStamp + "</div> </div> </div>";
+          message + "</div> <div class='stamp'>" + timeStamp + "</div> </div>";
       }
     }
 
