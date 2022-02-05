@@ -159,7 +159,7 @@ function showOpponentMessage() {
       //Gets the Time Sent:
       var currentStamp = Date.now();
       var ago = currentStamp - outgoingStamp;
-      var timeStamp = getFormattedStamp(ago);
+      var timeStamp = "";
 
       //Checks the Case:
       if (getCacheData(fullID, false) == null
@@ -191,7 +191,7 @@ function showOpponentMessage() {
       //Gets the Time Sent:
       var currentStamp = Date.now();
       var ago = currentStamp - incomingStamp;
-      var timeStamp = getFormattedStamp(ago);
+      var timeStamp = "";
 
       //Checks the Case:
       if (getCacheData(fullID, false) == null
