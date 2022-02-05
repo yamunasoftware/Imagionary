@@ -150,9 +150,10 @@ function showOpponentMessage() {
       //Gets the Message:
       var index = combinedArray[turns].indexOf(outgoingKey);
       var message = combinedArray[turns].substring(0, index);
+      var stamp = JSON.parse(combinedArray[turns].substring(index+1).replace(outgoingKey, ""));
 
       //Gets the Timestamp:
-      var ago = Date.now() - 0;
+      var ago = Date.now() - stamp;
       var timeStamp = getFormattedStamp(ago);
 
       //Checks the Case:
@@ -176,9 +177,10 @@ function showOpponentMessage() {
       //Gets the Message:
       var index = combinedArray[turns].indexOf(incomingKey);
       var message = combinedArray[turns].substring(0, index);
+      var stamp = JSON.parse(combinedArray[turns].substring(index+1).replace(incomingKey, ""));
 
       //Gets the Timestamp:
-      var ago = Date.now() - 0;
+      var ago = Date.now() - stamp;
       var timeStamp = getFormattedStamp(ago);
 
       //Checks the Case:
@@ -233,7 +235,7 @@ function getFormattedStamp(time) {
     timeStamp += Math.floor(ago/86400) + "d";
   }
 
-  else if (ago >= 604800 && ago < 2419200) {
+  else if (ago >= 604800) {
     //Sets the Stamp:
     timeStamp += Math.floor(ago/604800) + "w";
   }
