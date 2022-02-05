@@ -226,37 +226,27 @@ function getFormattedStamp(ago) {
   //Checks the Case:
   if (ago < 60) {
     //Sets the Stamp:
-    timeStamp = ago + " seconds";
+    timeStamp += ago + "s";
   }
 
   else if (ago >= 60 && ago < 3600) {
     //Sets the Stamp:
-    timeStamp = Math.floor(ago/60) + " minutes";
+    timeStamp += Math.floor(ago/60) + "m";
   }
 
   else if (ago >= 3600 && ago < 86400) {
     //Sets the Stamp:
-    timeStamp = Math.floor(ago/3600) + " hours";
+    timeStamp += Math.floor(ago/3600) + "h";
   }
 
   else if (ago >= 86400 && ago < 604800) {
     //Sets the Stamp:
-    timeStamp = Math.floor(ago/86400) + " days";
+    timeStamp += Math.floor(ago/86400) + "d";
   }
 
   else if (ago >= 604800 && ago < 2419200) {
     //Sets the Stamp:
-    timeStamp = Math.floor(ago/604800) + " weeks";
-  }
-
-  else if (ago >= 2419200 && ago < 29030400) {
-    //Sets the Stamp:
-    timeStamp = Math.floor(ago/604800) + " months";
-  }
-
-  else if (ago >= 29030400) {
-    //Sets the Stamp:
-    timeStamp = Math.floor(ago/604800) + " years";
+    timeStamp += Math.floor(ago/604800) + "w";
   }
 
   //Returns the Timestamp:
