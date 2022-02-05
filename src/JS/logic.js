@@ -160,7 +160,6 @@ function showOpponentMessage() {
       var currentStamp = Date.now();
       var ago = currentStamp - outgoingStamp;
       var timeStamp = getFormattedStamp(ago);
-      console.log(currentStamp + ", " + outgoingStamp)
 
       //Checks the Case:
       if (getCacheData(fullID, false) == null
@@ -193,7 +192,6 @@ function showOpponentMessage() {
       var currentStamp = Date.now();
       var ago = currentStamp - incomingStamp;
       var timeStamp = getFormattedStamp(ago);
-      console.log(currentStamp + ", " + incomingStamp)
 
       //Checks the Case:
       if (getCacheData(fullID, false) == null
@@ -221,9 +219,10 @@ function showOpponentMessage() {
 }
 
 //Get Formatted Stamp Function:
-function getFormattedStamp(ago) {
+function getFormattedStamp(time) {
   //Time Stamp Variable:
   var timeStamp = "";
+  var ago = Math.floor(time/1000);
   
   //Checks the Case:
   if (ago < 60) {
