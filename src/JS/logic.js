@@ -176,6 +176,7 @@ function showOpponentMessage() {
       //Gets the Message:
       var index = combinedArray[turns].indexOf(incomingKey);
       var message = combinedArray[turns].substring(0, index);
+      console.log(combinedArray);
 
       //Gets the Timestamp:
       var ago = Date.now() - 0;
