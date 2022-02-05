@@ -223,7 +223,7 @@ function getFormattedStamp(time) {
   //Checks the Case:
   if (ago < 60) {
     //Sets the Stamp:
-    timeStamp += ago + "s";
+    timeStamp += "now";
   }
 
   else if (ago >= 60 && ago < 3600) {
