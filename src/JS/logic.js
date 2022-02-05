@@ -164,15 +164,15 @@ function showOpponentMessage() {
         && getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents +=
-          "<div class='right space'> <div class='chat'> " +
-          message + "</div>" + "<div class='stamp'>" + timeStamp + "</div> </div>";
+          "<div class='right chat-space'> <div class='chat'> " +
+          message + "<div class='stamp'>" + timeStamp + "</div> </div> </div>";
       }
 
       else if (getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents +=
-          "<div class='left space'> <div class='chatOther'> " +
-          message + "</div>" + "<div class='stamp'>" + timeStamp + "</div> </div>";
+          "<div class='left chat-space'> <div class='chatOther'> " +
+          message + "<div class='stamp'>" + timeStamp + "</div> </div> </div>";
       }
     }
 
@@ -194,15 +194,15 @@ function showOpponentMessage() {
         && getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents +=
-          "<div class='left space'> <div class='chatOther'> " +
-          message + "</div>" + "<div class='stamp'>" + timeStamp + "</div> </div>";
+          "<div class='left chat-space'> <div class='chatOther'> " +
+          message + "<div class='stamp'>" + timeStamp + "</div> </div> </div>";
       }
 
       else if (getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents +=
-          "<div class='right space'> <div class='chat'> " +
-          message + "</div>" + "<div class='stamp'>" + timeStamp + "</div> </div>";
+          "<div class='right chat-space'> <div class='chat'> " +
+          message + "<div class='stamp'>" + timeStamp + "</div> </div> </div>";
       }
     }
 

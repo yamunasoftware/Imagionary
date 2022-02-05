@@ -112,6 +112,10 @@ html, body {
   color: #000000;
 }
 
+.chat-space {
+  margin: 5px;
+}
+
 .stamp {
   font-size: 10px;
   color: #FFFFFF;
