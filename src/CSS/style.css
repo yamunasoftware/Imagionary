@@ -113,6 +113,7 @@ html, body {
 }
 
 .stamp {
+  margin-top: 2px;
   font-size: 10px;
   color: #FFFFFF;
 }
