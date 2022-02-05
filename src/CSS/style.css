@@ -112,6 +112,12 @@ html, body {
   color: #000000;
 }
 
+.stamp {
+  margin: 5px;
+  font-size: 10px;
+  color: #FFFFFF;
+}
+
 /* CONTROL ITEMS */
 
 button {

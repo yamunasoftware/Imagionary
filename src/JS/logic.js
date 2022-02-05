@@ -151,20 +151,30 @@ function showOpponentMessage() {
       var index = combinedArray[turns].indexOf(outgoingKey);
       var message = combinedArray[turns].substring(0, index);
 
+      //Gets the Timestamp:
+      var outgoingIndex = combinedArray[turns].indexOf(outgoingKey) + outgoingKey.length;
+      var outgoingString = combinedArray[turns].substring(outgoingIndex);
+      var outgoingStamp = JSON.parse(outgoingString);
+
+      //Gets the Time Sent:
+      var currentStamp = Date.now();
+      var ago = currentStamp - outgoingStamp;
+      var timeStamp = getFormattedStamp(ago);
+
       //Checks the Case:
       if (getCacheData(fullID, false) == null
         && getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents +=
           "<div class='right'> <div class='chat space'> " +
-          message + "</div> </div>";
+          message + "<div class='stamp'>" + timeStamp + "</div> </div> </div>";
       }
 
       else if (getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents +=
           "<div class='left'> <div class='chatOther space'> " +
-          message + "</div> </div>";
+          message + "<div class='stamp'>" + timeStamp + "</div> </div> </div>";
       }
     }
 
@@ -173,20 +183,30 @@ function showOpponentMessage() {
       var index = combinedArray[turns].indexOf(incomingKey);
       var message = combinedArray[turns].substring(0, index);
 
+      //Gets the Timestamp:
+      var incomingIndex = combinedArray[counts].indexOf(incomingKey) + incomingKey.length;
+      var incomingString = combinedArray[counts].substring(incomingIndex);
+      var incomingStamp = JSON.parse(incomingString);
+
+      //Gets the Time Sent:
+      var currentStamp = Date.now();
+      var ago = currentStamp - incomingStamp;
+      var timeStamp = getFormattedStamp(ago);
+
       //Checks the Case:
       if (getCacheData(fullID, false) == null
         && getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents +=
           "<div class='left'> <div class='chatOther space'> " +
-          message + "</div> </div>";
+          message + "<div class='stamp'>" + timeStamp + "</div> </div> </div>";
       }
 
       else if (getCacheData(codeID, false) != null) {
         //Adds to the Chat:
         chatContents +=
           "<div class='right'> <div class='chat space'> " +
-          message + "</div> </div>";
+          message + "<div class='stamp'>" + timeStamp + "</div> </div> </div>";
       }
     }
 
@@ -196,6 +216,51 @@ function showOpponentMessage() {
   //Sets the HTML:
   box.innerHTML = chatContents;
   box.scrollTop = box.scrollHeight;
+}
+
+//Get Formatted Stamp Function:
+function getFormattedStamp(ago) {
+  //Time Stamp Variable:
+  var timeStamp = "";
+  
+  //Checks the Case:
+  if (ago < 60) {
+    //Sets the Stamp:
+    timeStamp = ago + " seconds";
+  }
+
+  else if (ago >= 60 && ago < 3600) {
+    //Sets the Stamp:
+    timeStamp = Math.floor(ago/60) + " minutes";
+  }
+
+  else if (ago >= 3600 && ago < 86400) {
+    //Sets the Stamp:
+    timeStamp = Math.floor(ago/3600) + " hours";
+  }
+
+  else if (ago >= 86400 && ago < 604800) {
+    //Sets the Stamp:
+    timeStamp = Math.floor(ago/86400) + " days";
+  }
+
+  else if (ago >= 604800 && ago < 2419200) {
+    //Sets the Stamp:
+    timeStamp = Math.floor(ago/604800) + " weeks";
+  }
+
+  else if (ago >= 2419200 && ago < 29030400) {
+    //Sets the Stamp:
+    timeStamp = Math.floor(ago/604800) + " months";
+  }
+
+  else if (ago >= 29030400) {
+    //Sets the Stamp:
+    timeStamp = Math.floor(ago/604800) + " years";
+  }
+
+  //Returns the Timestamp:
+  return timeStamp;
 }
 
 //Add Before Function:
