@@ -154,10 +154,9 @@ function showOpponentMessage() {
       //Gets the Stamp:
       var stamp = combinedArray[turns].replace(message, "");
       stamp = stamp.replace(outgoingKey, "");
-      console.log(stamp);
 
       //Gets the Timestamp:
-      var ago = Date.now() - 0;
+      var ago = Date.now() - JSON.parse(stamp);
       var timeStamp = getFormattedStamp(ago);
 
       //Checks the Case:
@@ -185,10 +184,9 @@ function showOpponentMessage() {
       //Gets the Stamp:
       var stamp = combinedArray[turns].replace(message, "");
       stamp = stamp.replace(incomingKey, "");
-      console.log(stamp);
 
       //Gets the Timestamp:
-      var ago = Date.now() - 0;
+      var ago = Date.now() - JSON.parse(stamp);
       var timeStamp = getFormattedStamp(ago);
 
       //Checks the Case:
