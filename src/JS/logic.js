@@ -152,13 +152,7 @@ function showOpponentMessage() {
       var message = combinedArray[turns].substring(0, index);
 
       //Gets the Timestamp:
-      var outgoingIndex = combinedArray[turns].indexOf(outgoingKey) + outgoingKey.length;
-      var outgoingString = combinedArray[turns].substring(outgoingIndex);
-      var outgoingStamp = JSON.parse(outgoingString);
-
-      //Gets the Time Sent:
-      var currentStamp = Date.now();
-      var ago = currentStamp - outgoingStamp;
+      var ago = Date.now() - 0;
       var timeStamp = getFormattedStamp(ago);
 
       //Checks the Case:
@@ -184,13 +178,7 @@ function showOpponentMessage() {
       var message = combinedArray[turns].substring(0, index);
 
       //Gets the Timestamp:
-      var incomingIndex = combinedArray[counts].indexOf(incomingKey) + incomingKey.length;
-      var incomingString = combinedArray[counts].substring(incomingIndex);
-      var incomingStamp = JSON.parse(incomingString);
-
-      //Gets the Time Sent:
-      var currentStamp = Date.now();
-      var ago = currentStamp - incomingStamp;
+      var ago = Date.now() - 0;
       var timeStamp = getFormattedStamp(ago);
 
       //Checks the Case:
