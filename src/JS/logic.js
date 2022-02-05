@@ -150,6 +150,8 @@ function showOpponentMessage() {
       //Gets the Message:
       var index = combinedArray[turns].indexOf(outgoingKey);
       var message = combinedArray[turns].substring(0, index);
+      var stamp = combinedArray.replace(message, "").replace(outgoingKey, "");
+      console.log(stamp);
 
       //Gets the Timestamp:
       var ago = Date.now() - 0;
@@ -176,7 +178,8 @@ function showOpponentMessage() {
       //Gets the Message:
       var index = combinedArray[turns].indexOf(incomingKey);
       var message = combinedArray[turns].substring(0, index);
-      console.log(combinedArray);
+      var stamp = combinedArray.replace(message, "").replace(outgoingKey, "");
+      console.log(stamp);
 
       //Gets the Timestamp:
       var ago = Date.now() - 0;
