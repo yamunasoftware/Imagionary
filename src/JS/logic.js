@@ -97,7 +97,7 @@ function showOpponentMessage() {
       //Gets the Outgoing Data:
       var outgoingIndex = outgoingArray[turns].indexOf(outgoingKey) + outgoingKey.length;
       var outgoingString = outgoingArray[turns].substring(outgoingIndex);
-      var outgoingStamp = JSON.parse(outgoingString);
+      var outgoingStamp = parseInt(outgoingString);
 
       //Loop Variable:
       var counts = 0;
@@ -107,7 +107,7 @@ function showOpponentMessage() {
         //Gets the Incoming Data:
         var incomingIndex = incomingArray[counts].indexOf(incomingKey) + incomingKey.length;
         var incomingString = incomingArray[counts].substring(incomingIndex);
-        var incomingStamp = JSON.parse(incomingString);
+        var incomingStamp = parseInt(incomingString);
 
         //Checks the Case:
         if (incomingStamp < outgoingStamp) {
@@ -156,15 +156,29 @@ function showOpponentMessage() {
       stamp = stamp.replace(outgoingKey, "");
 
       //Gets the Timestamp:
-      var ago = Date.now() - JSON.parse(stamp);
+      var ago = Date.now() - parseInt(stamp);
       var timeStamp = getFormattedStamp(ago);
 
       //Checks the Case:
       if (turns != combinedArray.length-1) {
         //Checks the Case:
         if (combinedArray[turns+1].includes(outgoingKey)) {
-          //Sets the Timestamp:
-          timeStamp = "";
+          //Gets the Message:
+          var nextIndex = combinedArray[turns+1].indexOf(outgoingKey);
+          var nextMessage = combinedArray[turns+1].substring(0, nextIndex);
+
+          //Gets the Stamp:
+          var nextStamp = combinedArray[turns+1].replace(nextMessage, "");
+          nextStamp = nextStamp.replace(outgoingKey, "");
+
+          //Gets the Difference:
+          var diff = (parseInt(nextStamp) - parseInt(stamp))/1000;
+
+          //Checks the Case:
+          if (diff < 60) {
+            //Sets the Timestamp:
+            timeStamp = "";
+          }
         }
       }
 
@@ -195,15 +209,29 @@ function showOpponentMessage() {
       stamp = stamp.replace(incomingKey, "");
 
       //Gets the Timestamp:
-      var ago = Date.now() - JSON.parse(stamp);
+      var ago = Date.now() - parseInt(stamp);
       var timeStamp = getFormattedStamp(ago);
 
       //Checks the Case:
       if (turns != combinedArray.length-1) {
         //Checks the Case:
         if (combinedArray[turns+1].includes(incomingKey)) {
-          //Sets the Timestamp:
-          timeStamp = "";
+          //Gets the Message:
+          var nextIndex = combinedArray[turns+1].indexOf(incomingKey);
+          var nextMessage = combinedArray[turns+1].substring(0, nextIndex);
+
+          //Gets the Stamp:
+          var nextStamp = combinedArray[turns+1].replace(nextMessage, "");
+          nextStamp = nextStamp.replace(incomingKey, "");
+
+          //Gets the Difference:
+          var diff = (parseInt(nextStamp) - parseInt(stamp))/1000;
+
+          //Checks the Case:
+          if (diff < 60) {
+            //Sets the Timestamp:
+            timeStamp = "";
+          }
         }
       }
 
