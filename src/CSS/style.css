@@ -62,8 +62,8 @@ html, body {
 .chatBox {
   display: inline-block;
 	background-color: #000000;
-  width: 200px;
-  height: 200px;
+  width: 350px;
+  height: 350px;
   overflow: scroll;
 }
 
