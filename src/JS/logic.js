@@ -287,9 +287,19 @@ function getFormattedStamp(time) {
     timeStamp += Math.floor(ago/86400) + "d";
   }
 
-  else if (ago >= 604800) {
+  else if (ago >= 604800 && ago < 2419200) {
     //Sets the Stamp:
     timeStamp += Math.floor(ago/604800) + "w";
+  }
+
+  else if (ago >= 2419200 && ago < 29030400) {
+    //Sets the Stamp:
+    timeStamp += Math.floor(ago/2419200) + "mo";
+  }
+
+  else if (ago >= 29030400) {
+    //Sets the Stamp:
+    timeStamp += Math.floor(ago/29030400) + "y";
   }
 
   //Returns the Timestamp:
