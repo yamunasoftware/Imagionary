@@ -158,12 +158,6 @@ window.onload = function () {
     z = false;
     q = false;
   });
-
-  //Window Resize Event:
-  window.addEventListener('resize', function () {
-    //Reloads the Page:
-    window.location.reload();
-  });
 }
 
 /* CANVAS FUNCTIONS */
