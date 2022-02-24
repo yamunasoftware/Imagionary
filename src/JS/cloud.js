@@ -376,6 +376,9 @@ function getGame() {
         showResult();
       })
       .catch((error) => {
+        //Error Message:
+        disableLoading();
+        showGameMessage("An Error Ocurred");
         console.log(error);
       });
   }
