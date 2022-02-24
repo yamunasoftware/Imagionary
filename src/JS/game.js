@@ -89,13 +89,13 @@ window.onload = function () {
 
   /* Input Events */
 
-  //Guess Input Event:
+  //Chat Input Event:
   document.getElementById('chatInput').addEventListener("input", function (e) {
     //Resets the Input Value:
     document.getElementById('chatInput').value = document.getElementById('chatInput').value.replace(/["]+/g, '');
   });
 
-  //Guess Input Event:
+  //Code Input Event:
   document.getElementById('codeInput').addEventListener("input", function (e) {
     //Resets the Input Value:
     document.getElementById('codeInput').value = document.getElementById('codeInput').value.replace(/["]+/g, '');
