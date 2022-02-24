@@ -91,29 +91,20 @@ window.onload = function () {
 
   //Guess Input Event:
   document.getElementById('chatInput').addEventListener("input", function (e) {
-    //Checks the Case:
-    if (e.key == '"') {
-      //Resets the Input Value:
-      document.getElementById('chatInput').value = "";
-    }
+    //Resets the Input Value:
+    document.getElementById('chatInput').value = document.getElementById('chatInput').value.replace(/["]+/g, '');
   });
 
   //Guess Input Event:
   document.getElementById('codeInput').addEventListener("input", function (e) {
-    //Checks the Case:
-    if (e.key == '"') {
-      //Resets the Input Value:
-      document.getElementById('codeInput').value = "";
-    }
+    //Resets the Input Value:
+    document.getElementById('codeInput').value = document.getElementById('codeInput').value.replace(/["]+/g, '');
   });
 
   //Guess Input Event:
   document.getElementById('guessInput').addEventListener("input", function (e) {
-    //Checks the Case:
-    if (e.key == '"') {
-      //Resets the Input Value:
-      document.getElementById('guessInput').value = "";
-    }
+    //Resets the Input Value:
+    document.getElementById('guessInput').value = document.getElementById('guessInput').value.replace(/["]+/g, '');
   });
 
   /* Key Events */
