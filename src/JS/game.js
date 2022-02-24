@@ -87,6 +87,35 @@ window.onload = function () {
   canvas.addEventListener("touchend", function(e) {e.preventDefault()});
   canvas.addEventListener("touchcancel", function(e) {e.preventDefault()});
 
+  /* Input Events */
+
+  //Guess Input Event:
+  document.getElementById('chatInput').addEventListener("input", function (e) {
+    //Checks the Case:
+    if (e.key == '"') {
+      //Resets the Input Value:
+      document.getElementById('chatInput').value = "";
+    }
+  });
+
+  //Guess Input Event:
+  document.getElementById('codeInput').addEventListener("input", function (e) {
+    //Checks the Case:
+    if (e.key == '"') {
+      //Resets the Input Value:
+      document.getElementById('codeInput').value = "";
+    }
+  });
+
+  //Guess Input Event:
+  document.getElementById('guessInput').addEventListener("input", function (e) {
+    //Checks the Case:
+    if (e.key == '"') {
+      //Resets the Input Value:
+      document.getElementById('guessInput').value = "";
+    }
+  });
+
   /* Key Events */
 
   //Keydown Array Event:
