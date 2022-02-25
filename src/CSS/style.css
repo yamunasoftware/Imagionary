@@ -29,6 +29,11 @@ html, body {
   align-content: center;
 }
 
+.dark {
+  background-color: #000000;
+  color: #FFFFFF;
+}
+
 .border {
   border: 5px solid #8A00FF;
   border-radius: 5px;
