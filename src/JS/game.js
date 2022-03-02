@@ -7,12 +7,7 @@ var context;
 //Mouse Variables:
 var x = 0;
 var y = 0;
-
-//Event Variables:
 var down = false;
-var control = false;
-var z = false;
-var strokes = [];
 
 //Onload:
 window.onload = function () {
@@ -105,78 +100,6 @@ window.onload = function () {
   document.getElementById('guessInput').addEventListener("input", function (e) {
     //Resets the Input Value:
     document.getElementById('guessInput').value = document.getElementById('guessInput').value.replace(/["]+/g, '');
-  });
-
-  /* Key Events */
-
-  //Keydown Array Event:
-  window.addEventListener("keydown", function (e) {
-    //Adds to Array:
-    strokes.push(e.key);
-    var turns = 0;
-
-    //Loops through Array:
-    mainLoop: while (turns < strokes.length) {
-      //Checks the Case:
-      if (strokes[turns] == "Control") {
-        //Sets the Boolean:
-        control = true;
-      }
-
-      //Checks the Case:
-      if (strokes[turns] == "z") {
-        //Sets the Boolean:
-        z = true;
-      }
-
-      //Checks the Case:
-      if (control && z) {
-        //Checks the Case:
-        if (getCacheData(fullID, false) == null
-          && getCacheData(codeID, false) != null) {
-          //Erases:
-          erase();
-          showControlMessage("Erased");
-          break mainLoop;
-        }
-      }
-
-      turns++;
-    }
-
-    //Checks the Case:
-    if (e.key == "Enter") {
-      //Checks the Case:
-      if (this.document.getElementById('chatInput') == this.document.activeElement) {
-        //Sends Message:
-        sendMessage(this.document.getElementById('chatInput').value);
-      }
-
-      else if (this.document.getElementById('codeInput') == this.document.activeElement) {
-        //Joins Game:
-        joinGame(this.document.getElementById('codeInput').value);
-      }
-
-      else if (this.document.getElementById('guessInput') == this.document.activeElement) {
-        //Sends Guess:
-        sendGuess(this.document.getElementById('guessInput').value);
-      }
-
-      else {
-        //Sends the Game:
-        sendGame();
-        showControlMessage('Saved');
-      }
-    }
-  });
-
-  //Key Up Array Event:
-  window.addEventListener("keyup", function (e) {
-    //Clears the Array:
-    strokes = [];
-    control = false;
-    z = false;
-    q = false;
   });
 }
 
