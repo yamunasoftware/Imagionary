@@ -64,7 +64,7 @@
       <!-- Chat Container -->
       <div id="chatContainer" style="display: none;" class="style">
         <!-- Chat Message -->
-        <div id="chatBox" class="style chatBox"></div>
+        <div id="chatBox" class="style no-pointers chatBox"></div>
 
         <!-- Chat Controls -->
         <div id="chatControls">
@@ -95,6 +95,9 @@
         &nbsp; <button onclick="erase(); showControlMessage('Erased');"> Erase </button>
         &nbsp; <button onclick="clearCacheData(); window.location.reload();"> Quit </button>
         &nbsp; <button onclick="window.location.reload();"> Update </button>
+        &nbsp; <button onclick="window.open('https://github.com/yamunasoftware/Imagionary/blob/main/README.md');"> 
+          Docs 
+        </button>
       </div>
 
       <!-- Guess Container -->
@@ -104,6 +107,9 @@
         &nbsp; <button onclick="sendGuess(document.getElementById('guessInput').value);"> Save </button>
         &nbsp; <button onclick="clearCacheData(); window.location.reload();"> Quit </button>
         &nbsp; <button onclick="window.location.reload();"> Update </button>
+        &nbsp; <button onclick="window.open('https://github.com/yamunasoftware/Imagionary/blob/main/README.md');"> 
+          Docs 
+        </button>
       </div>
 
       <!-- Game Control Message -->
