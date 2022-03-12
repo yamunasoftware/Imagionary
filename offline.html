@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
-<!-- Viewport -->
 <meta charset="utf-8" />
-<meta name="description" content="Player Versus Player Pictionary" />
+<meta name="description" content="Personal Improvement App" />
 <meta name="viewport" content="initial-scale=1, width=device-width, height=device-height, viewport-fit=cover" />
 <meta name="theme-color" content="#000000" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -14,31 +12,53 @@
   <title> Offline </title>
 </head>
 
-<!-- Stylesheet -->
+<!-- Local Stylesheet -->
 <style>
   /* HTML SETUP */
 
   html, body {
     margin: 0px;
-    background-color: #000000;
+    padding: 0px;
     width: 100%;
     height: 100%;
-    scroll-behavior: smooth;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 60px;
     color: #FFFFFF;
+    background-color: #000000;
   }
 
-  #container {
-    margin: 0px;
-    min-height: 100%;
-    min-width: 100%;
-    background-color: #000000;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 60px;
-    color: #FFFFFF;
+  #content {
+    margin: 10px;
+    font-family: Tahoma, Verdana;
+    text-decoration: none;
+    font-weight: bold;
     text-align: center;
+    color: #FFFFFF;
+    background-color: #000000;
   }
+
+  /* UI ELEMENTS */
+
+  #header {
+    font-size: 50px;
+  }
+
+  button {
+    padding: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+    cursor: pointer;
+    background-color: #a4da99;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  button:hover {
+    background-color: #39FF13;
+  }
+
+  /* SCROLLING */
 
   ::-webkit-scrollbar {
     width: 10px;
@@ -46,61 +66,38 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #000000; 
+    background: #000000;
   }
- 
+
   ::-webkit-scrollbar-thumb {
-    background: #8A00FF; 
+    background: #a4da99;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #BF00FF; 
-  }
-
-  ::-webkit-scrollbar-corner {
-    background-color: #000000;
-  }
-
-  .style {
-    margin: 20px;
-  }
-
-  button {
-    margin-bottom: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 25px;
-    border: none;
-    border-radius: 2px;
-    background-color: #8A00FF;
-    color: #000000;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background-color: #BF00FF;
+    background: #39FF13;
   }
 </style>
 
-<script>
-  //Onload Function:
-  window.onload = function () {
-    //Checks the Case:
-    if (navigator.onLine) {
-      //Redirects:
-      window.location.href = "/index.html";
+<body>
+  <!-- Main Script -->
+  <script>
+    //Onload Function:
+    window.onload = function () {
+      //Checks the Case:
+      if (navigator.onLine) {
+        //Redirects:
+        window.location.href = "/index.html";
+      }
     }
-  }
-</script>
+  </script>
 
-<!-- Container -->
-<div id="container">
+  <div id="content">
+    <!-- Page Header -->
+    <div id="header" style="margin: 20px;"> You're Offline! </div>
 
-  <!-- Body -->
-  <body>
-    <!-- Offline Header-->
-    <div class="style"> You're Offline! </div>
-    <button onclick="window.location.reload();"> Reload </button>
-  </body>
-</div>
+    <!-- Reload Button -->
+    <button onclick="window.location.reload();"> Try Again </button>
+  </div>
+</body>
 
 </html>

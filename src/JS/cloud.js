@@ -1,431 +1,715 @@
-/* CLOUD DATABASE ACCESS */
+/* CLOUD VARIABLES */
 
-/* CONFIG */
-
-//Config Data Variable:
+//Configuration:
 const firebaseConfig = {
-  apiKey: "AIzaSyAKJPnB4CkuufkEwAshtP4np7YIr-lEf48",
-  authDomain: "imagionary-67032.firebaseapp.com",
-  projectId: "imagionary-67032",
-  storageBucket: "imagionary-67032.appspot.com",
-  messagingSenderId: "345604483690",
-  appId: "1:345604483690:web:1ed3a08a449245023a3813"
+  apiKey: "AIzaSyDTw4G4mOxZbIYYEPkBUDo2sycRM2XuN94",
+  authDomain: "mysadhana-75be1.firebaseapp.com",
+  projectId: "mysadhana-75be1",
+  storageBucket: "mysadhana-75be1.appspot.com",
+  messagingSenderId: "30818005011",
+  appId: "1:30818005011:web:4eef8ffc3bbfc3dd468fe6"
 };
 
-//Initializes App:
+//Database Variables:
 firebase.initializeApp(firebaseConfig);
 var database = firebase.firestore();
-
-/* DATA VARIABLES */
-
-//Game Variables:
-var currentCode = "";
-var drawing = [];
-var outgoing = [];
-var incoming = [];
-var full = false;
-var word = "";
-var guess = "";
-var disable = true;
-var check = false;
+var collectionName = "users";
 
 //ID Variables:
-var codeID = "currentCode";
-var drawingID = "drawing";
-var outgoingID = "outgoing";
-var incomingID = "incoming";
-var fullID = "full";
-var wordID = "word";
-var guessID = "guess";
-var disableID = "disable";
-var checkID = "check";
+var codeID = "code";
+var dataID = "data";
 
-//Cloud Response Variables:
-var collectionName = "games";
-var outgoingKey = "$outgoing:";
-var incomingKey = "$incoming:";
+//Data Variables:
+var code = "";
+var data = [];
 
-/* CLOUD STORAGE FUNCTIONS */
+//Timeout Variables:
+var notificationTimeout = 10000000;
+var timeout = 100000;
+var datesTimeout = 1000;
+var notesTimeout = 100;
 
-//Check Game Function:
-function checkGame(code) {
-  //Gets Server Response:
-  database.collection(collectionName).doc(code).get().then((docRef) => {
-    //Checks the Case:
-    if (docRef.exists) {
-      //Sets the Check:
-      check = true;
-      setCacheData(checkID, check, true);
-    }
+//Response Variables:
+var wait = false;
+var saveIndex = null;
+var mainInterval = null;
 
-    else {
-      //Sets the Check:
-      setCacheData(checkID, check, true);
-    }
+/* CLOUD AUTH FUNCTIONS */
+
+//Sign Up Function:
+function signUp() {
+  //Gets the Code, Sets the Cloud Data:
+  var code = generateCode();
+  database.collection(collectionName).doc(code).set({
+    data: JSON.stringify(data)
   })
-    .catch((error) => {
-      //Error Message:
-      disableLoading();
-      showGameMessage("An Error Ocurred");
-      clearCacheData();
+    .then(() => {
+      //Sets the Cache Data:
+      setCacheData(codeID, code, false);
+      setCacheData(dataID, data, true);
+
+      //Shows the Startup:
+      showStartup();
+    })
+    .catch(() => {
+      //Displays Error:
+      showError("An Error Ocurred");
+      showSplash();
     });
 }
 
-//Create Game Function:
-function createGame() {
+//Log In Function:
+function logIn() {
+  //Gets the Code:
+  var code = document.getElementById('log-in-input').value;
+
   //Checks the Case:
-  if (getCacheData(codeID, false) == null) {
-    //Sets the Drawing:
-    enableLoading();
-    resetDrawing();
+  if (code != "") {
+    //Gets the Cloud Data:
+    database.collection(collectionName).doc(code).get().then((doc) => {
+      //Checks the Case:
+      if (doc.exists) {
+        //Sets the Data:
+        data = JSON.parse(formatData(JSON.stringify(doc.data().data)));
 
-    //Sets the Word:
-    word = randomWord();
-    setCacheData(wordID, word, false);
+        //Sets the Cache Data:
+        setCacheData(codeID, code, false);
+        setCacheData(dataID, data, true);
 
-    //Sets the Code:
-    currentCode = generateCode();
-    setCacheData(codeID, currentCode, false);
-    checkGame(currentCode);
+        //Shows the Startup:
+        showStartup();
+      }
 
-    //Checks the Case:
-    if (!getCacheData(checkID, true)) {
-      //Sets the Cloud Database:
-      database.collection(collectionName).doc(currentCode).set({
-        drawing: JSON.stringify(drawing),
-        outgoing: JSON.stringify(outgoing),
-        incoming: JSON.stringify(incoming),
-        full: JSON.stringify(full),
-        guess: guess,
-        word: word
-      })
-        .then((docRef) => {
-          //Sets the Cache Data:
-          setCacheData(drawingID, drawing, true);
-          setCacheData(guessID, guess, false);
-          setCacheData(outgoingID, outgoing, true);
-          setCacheData(incomingID, incoming, true);
-
-          //Control Functions:
-          showControls();
-          showDrawControls();
-          showMessage();
-          showWord();
-          disableLoading();
-        })
-        .catch((error) => {
-          //Error Message:
-          disableLoading();
-          showGameMessage("An Error Ocurred");
-          clearCacheData();
-        });
-    }
-
-    else {
-      //Creates Game Again:
-      createGame();
-    }
-  }
-}
-
-//Join Game Function:
-function joinGame(code) {
-  //Checks the Case:
-  if (getCacheData(codeID, false) == null) {
-    //Gets the Game Code:
-    enableLoading();
-    currentCode = code;
-
-    //Checks the Case:
-    if (currentCode != "") {
-      //Updates the Code:
-      database.collection(collectionName).doc(currentCode).get().then((docRef) => {
-        //Checks the Case:
-        if (!JSON.parse(formatData(JSON.stringify(docRef.data().full)))) {
-          //Updates the Full:
-          full = true;
-          setCacheData(codeID, currentCode, false);
-          setCacheData(fullID, full, true);
-
-          //Updates the Game:
-          database.collection(collectionName).doc(currentCode).update({
-            full: JSON.stringify(getCacheData(fullID, true))
-          }).then((docRef) => {
-            //Gets the Data:
-            getGame();
-
-            //Control Functions:
-            showControls();
-            showDrawControls();
-            showMessage();
-            showWord();
-            disableLoading();
-          })
-            .catch((error) => {
-              //Error Message:
-              disableLoading();
-              showGameMessage("Invalid Code");
-              clearCacheData();
-            });
-        }
-
-        else {
-          //Error Message:
-          disableLoading();
-          showGameMessage("Invalid Code");
-          clearCacheData();
-        }
-      })
-        .catch((error) => {
-          //Error Message:
-          disableLoading();
-          showGameMessage("Invalid Code");
-          clearCacheData();
-        });
-    }
-
-    else {
-      //Displays the Information:
-      disableLoading();
-      showGameMessage("Invalid Code");
-      clearCacheData();
-    }
-  }
-}
-
-//Delete Game Function:
-function deleteGame() {
-  //Deletes the Game:
-  database.collection(collectionName).doc(currentCode).delete().then((docRef) => {
-    //Deleted!
-  })
-    .catch((error) => {
-      //Error Message:
-      disableLoading();
-      showGameMessage("An Error Ocurred");
-      clearCacheData();
-    });
-}
-
-/* CLOUD GAME FUNCTIONS */
-
-//Send Game Function:
-function sendGame() {
-  //Checks the Case:
-  if (getCacheData(fullID, false) == null
-    && getCacheData(codeID, false) != null) {
-    //Saves the Drawing:
-    enableLoading();
-    saveDrawing();
-
-    //Updates the Game:
-    currentCode = getCacheData(codeID, false);
-    database.collection(collectionName).doc(currentCode).update({
-      drawing: JSON.stringify(getCacheData(drawingID, true)),
+      else {
+        //Displays Error:
+        showError("Invalid ID");
+        showSplash();
+      }
     })
-      .then((docRef) => {
-        //Disables Loading:
-        disableLoading();
-      })
-      .catch((error) => {
-        //Error Message:
-        disableLoading();
-        showGameMessage("An Error Ocurred");
+      .catch(() => {
+        //Displays Error:
+        showError("An Error Ocurred");
+        showSplash();
       });
   }
 
-  else if (getCacheData(codeID, false) != null) {
-    //Saves the Drawing:
-    enableLoading();
-    saveDrawing();
-
-    //Updates the Game:
-    currentCode = getCacheData(codeID, false);
-    database.collection(collectionName).doc(currentCode).update({
-      drawing: JSON.stringify(getCacheData(drawingID, true)),
-      full: JSON.stringify(getCacheData(fullID, true))
-    })
-      .then((docRef) => {
-        //Disables Loading
-        disableLoading();
-      })
-      .catch((error) => {
-        //Error Message:
-        disableLoading();
-        showGameMessage("An Error Ocurred");
-      });
+  else {
+    //Displays Error:
+    showError("Invalid ID");
+    showSplash();
   }
 }
 
-//Send Guess Function:
-function sendGuess(attempt) {
+//Log Out Function:
+function logOut() {
+  //Logs Out:
+  clearCacheData();
+  window.location.reload();
+}
+
+//Remove User Function:
+function removeUser() {
   //Checks the Case:
   if (getCacheData(codeID, false) != null) {
-    //Gets the Guess:
-    enableLoading();
-    guess = attempt;
-    setCacheData(guessID, guess, false);
+    //Gets the Code:
+    code = getCacheData(codeID, false);
 
+    //Removes the User:
+    database.collection(collectionName).doc(code).delete().then(() => {
+      //Logs Out:
+      logOut();
+    })
+      .catch(() => {
+        //Displays Error:
+        showError("An Error Ocurred");
+        showSplash();
+      });
+  }
+}
+
+//Generate Code Function:
+function generateCode() {
+  //Loop Variables:
+  var turns = 0;
+  var code = "";
+
+  //Loops through Array:
+  mainLoop: while (turns < 20) {
+    //Gets the Digit:
+    var digit = Math.floor((Math.random() * 9) + 1);
+    code += digit;
+
+    turns++;
+  }
+
+  //Returns the Code:
+  return code;
+}
+
+/* CLOUD REQUEST FUNCTIONS */
+
+//Send Data Function:
+function sendData() {
+  //Checks the Case:
+  if (getCacheData(codeID, false) != null) {
+    //Gets the Code:
+    code = getCacheData(codeID, false);
+    data = getCacheData(dataID, true);
+
+    //Sets the Cloud Data:
+    database.collection(collectionName).doc(code).update({
+      data: JSON.stringify(data)
+    })
+      .catch(() => {
+        //Displays Error:
+        showDashError("An Error Ocurred");
+        showDashboard();
+      });
+  }
+}
+
+//Get Data Function:
+function getData() {
+  //Checks the Case:
+  if (getCacheData(codeID, false) != null) {
+    //Gets the Code:
+    code = getCacheData(codeID, false);
+
+    //Gets the Cloud Data:
+    database.collection(collectionName).doc(code).get().then((doc) => {
+      //Checks the Case:
+      if (doc.exists) {
+        //Sets the Data:
+        data = JSON.parse(formatData(JSON.stringify(doc.data().data)));
+        setCacheData(dataID, data, true);
+        wait = true;
+      }
+
+      else {
+        //Logs Out:
+        logOut();
+      }
+    })
+      .catch(() => {
+        //Displays Error:
+        showDashError("An Error Ocurred");
+        showDashboard();
+      });
+  }
+}
+
+/* DATA FUNCTIONS */
+
+//Copy Code Function:
+function copyCode() {
+  //Sends the Code to Clipboard:
+  code = getCacheData(codeID, false);
+  navigator.clipboard.writeText(code);
+  showCopyMessage();
+}
+
+//Pin Note Function:
+function pinNote(index) {
+  //Checks the Case:
+  if (getCacheData(dataID, false) != null
+    && index != 0) {
+    //Array Variables:
+    data = getCacheData(dataID, true);
+    var localData = [];
+
+    //Loop Variables:
+    var turns = 0;
+
+    //Loops through Array:
+    mainLoop: while (turns < data.length) {
+      //Checks the Case:
+      if (turns == 0) {
+        //Pushes to the Data:
+        localData.push(data[index]);
+        localData.push(data[turns]);
+      }
+
+      else if (turns != index) {
+        //Pushes to the Data:
+        localData.push(data[turns]);
+      }
+
+      turns++;
+    }
+
+    //Sets the Data:
+    data = localData;
+    setCacheData(dataID, data, true);
+    exitSafely();
+  }
+}
+
+//Save Note Function:
+function saveNote() {
+  //Checks the Case:
+  if (getCacheData(dataID, false) != null && saveIndex != null) {
+    //Sets the Data:
+    data = getCacheData(dataID, true);
+    data[saveIndex] = document.getElementById('content-area').value.replace(/["]+/g, '');
+
+    //Saves the Data:
+    setCacheData(dataID, data, true);
+    sendData();
+  }
+}
+
+//Add Note Function:
+function addNote() {
+  //Checks the Case:
+  if (getCacheData(dataID, false) != null) {
+    //Gets the Data:
+    data = getCacheData(dataID, true);
+    data.push("");
+
+    //Sends the Data
+    setCacheData(dataID, data, true);
+    sendData();
+    displayNotes();
+  }
+}
+
+//Delete Note Function:
+function deleteNote(index) {
+  //Checks the Case:
+  if (getCacheData(dataID, false) != null) {
+    //Deletes the Note:
+    data = getCacheData(dataID, true);
+    data = deleteElement(data, index);
+
+    //Saves Data:
+    setCacheData(dataID, data, true);
+    exitSafely();
+  }
+}
+
+//Exit Notes Function:
+function exitNote() {
+  //Resets Data:
+  saveNote();
+  saveIndex = null;
+
+  //Shows the Startup:
+  closeConfirm();
+  showStartup();
+
+  //Checks the Case:
+  if (mainInterval != null) {
+    //Cancels the Interval:
+    clearInterval(mainInterval);
+  }
+}
+
+//Exit Safely Function:
+function exitSafely() {
+  //Exits Safely:
+  sendData();
+  saveIndex = null;
+
+  //Shows Dashboard:
+  closeConfirm();
+  showDashboard();
+  displayNotes();
+
+  //Checks the Case:
+  if (mainInterval != null) {
+    //Cancels the Interval:
+    clearInterval(mainInterval);
+  }
+}
+
+//Display Notes Function:
+function displayNotes() {
+  //Checks the Case:
+  if (getCacheData(dataID, false) != null) {
+    //Loop Variables:
+    data = getCacheData(dataID, true);
+    var notesList = "";
+    var turns = 0;
+
+    //Loops through Array:
+    mainLoop: while (turns < data.length) {
+      //Sets the Notes List:
+      notesList +=
+        "<div class='margin padding card center'>"
+        + "<div class='padding'>" + title(data[turns]) + "</div>";
+
+      //Sets the Notes List:
+      var alerts = checkDates(dates(data[turns]));
+      notesList +=
+        "<div id='past" + turns + "' class='margin dash-alert disappear'>" + alerts[0] + "</div>"
+        + "<div id='now" + turns + "' style='background-color: #147efb;' class='margin dash-alert disappear'>" + alerts[1] + "</div>"
+        + "<div id='future" + turns + "' style='background-color: #23C552;' class='margin dash-alert disappear'>" + alerts[2] + "</div>"
+        + "<button class='dash-button' onclick='showNotes(" + turns + ");'> Open </button>";
+
+      //Checks the Case:
+      if (turns != 0) {
+        //Adds the Button:
+        notesList += "<button class='dash-button' onclick='pinNote(" + turns + ");'> Pin </button>";
+      }
+
+      //Adds the Close Button:
+      notesList +=
+        "<button class='dash-button' onclick='showConfirm(" + turns + ");'> Delete </button> </div>";
+
+      turns++;
+    }
+
+    //Sets the HTML:
+    document.getElementById('notes-list').innerHTML = notesList;
+  }
+}
+
+//Search Function:
+function search() {
+  //Checks the Case:
+  if (getCacheData(codeID, false) != null &&
+    saveIndex == null) {
+    //Loop Variables:
+    data = getCacheData(dataID, true);
+    var turns = 0;
+    var notesList = "";
+
+    //Loops through Array:
+    mainLoop: while (turns < data.length) {
+      //Checks the Case:
+      if (data[turns].toLowerCase().includes(document.getElementById('search').value.toLowerCase())) {
+        //Sets the Notes List:
+        notesList +=
+          "<div class='margin padding card center'>"
+          + "<div class='padding'>" + title(data[turns]) + "</div>";
+
+        //Sets the Notes List:
+        var alerts = checkDates(dates(data[turns]));
+        notesList +=
+          "<div id='past" + turns + "' class='margin dash-alert disappear'>" + alerts[0] + "</div>"
+          + "<div id='now" + turns + "' style='background-color: #147efb;' class='margin dash-alert disappear'>" + alerts[1] + "</div>"
+          + "<div id='future" + turns + "' style='background-color: #23C552;' class='margin dash-alert disappear'>" + alerts[2] + "</div>"
+          + "<button class='dash-button' onclick='showNotes(" + turns + ");'> Open </button>";
+
+        //Checks the Case:
+        if (turns != 0) {
+          //Adds the Button:
+          notesList += "<button class='dash-button' onclick='pinNote(" + turns + ");'> Pin </button>";
+        }
+
+        //Adds the Close Button:
+        notesList +=
+          "<button class='dash-button' onclick='showConfirm(" + turns + ");'> Delete </button> </div>";
+      }
+
+      turns++;
+    }
+
+    //Sets the HTML:
+    document.getElementById('notes-list').innerHTML = notesList;
+  }
+}
+
+//Display Dash Dates Function:
+function displayDashDates() {
+  //Checks the Case:
+  if (getCacheData(codeID, false) != null &&
+    saveIndex == null) {
+    //Loop Variables:
+    data = getCacheData(dataID, true);
+    var turns = 0;
+
+    //Loops through Array:
+    mainLoop: while (turns < data.length) {
+      //Gets the Alerts:
+      var alerts = checkDates(dates(data[turns]));
+
+      //Checks the Case:
+      if (document.getElementById('past' + turns) != null) {
+        //Sets the Alert:
+        document.getElementById('past' + turns).innerHTML = alerts[0];
+      }
+
+      //Checks the Case:
+      if (document.getElementById('now' + turns) != null) {
+        //Sets the Alert:
+        document.getElementById('now' + turns).innerHTML = alerts[1];
+      }
+
+      //Checks the Case:
+      if (document.getElementById('future' + turns) != null) {
+        //Sets the Alert:
+        document.getElementById('future' + turns).innerHTML = alerts[2];
+      }
+
+      turns++;
+    }
+  }
+}
+
+//Title Function:
+function title(string) {
+  //Loops Variables:
+  var noteTitle = "";
+  var turns = 0;
+  var localString =
+    string.replace(new RegExp("\n", "g"), "$n");
+
+  //Loops through Array:
+  mainLoop: while (turns < localString.length) {
     //Checks the Case:
-    if (getCacheData(guessID, false) != "") {
-      //Updates the Game:
-      currentCode = getCacheData(codeID, false);
-      database.collection(collectionName).doc(currentCode).update({
-        guess: getCacheData(guessID, false)
-      })
-        .then((docRef) => {
-          //Checks for Win:
-          disableLoading();
-          showResult();
-        })
-        .catch((error) => {
-          //Error Message:
-          disableLoading();
-          showGameMessage("An Error Ocurred");
-        });
+    if (localString[turns] == "$") {
+      //Breaks Loop:
+      break mainLoop;
     }
 
     else {
-      //Sets the Message:
-      showControlMessage("Invalid Guess");
+      //Adds to the Title:
+      noteTitle += localString[turns];
+    }
+
+    turns++;
+  }
+
+  //Returns the Title:
+  return noteTitle;
+}
+
+/* DATES FUNCTIONS */
+
+//Highlight Dates:
+function highlightDates(dates) {
+  //Checks the Case:
+  if (saveIndex != null) {
+    //Loop Variable:
+    var turns = 0;
+
+    //Date Variables:
+    var date = new Date();
+    var currentMonth = date.getMonth() + 1;
+    var currentDay = date.getDate();
+
+    //Loops through Array:
+    mainLoop: while (turns < dates.length) {
+      //Gets the Dates:
+      var currentDate = dates[turns].replace("-", "/");
+      var localDates = extractDate(dates[turns]);
+
+      //Checks the Case:
+      if (localDates[0] < currentMonth ||
+        (localDates[0] == currentMonth && localDates[1] < currentDay)) {
+        //Sets the Content:
+        var area = document.getElementById('text-area').innerHTML;
+        area = area.replace(new RegExp(currentDate, "g"), "<u>" + currentDate + "</u>");
+        document.getElementById('text-area').innerHTML = area;
+      }
+
+      else if (localDates[0] == currentMonth && localDates[1] == currentDay) {
+        //Sets the Content:
+        var area = document.getElementById('text-area').innerHTML;
+        area = area.replace(new RegExp(currentDate, "g"), "<span>" + currentDate + "</span>");
+        document.getElementById('text-area').innerHTML = area;
+      }
+
+      else if (localDates[0] == currentMonth && localDates[1] > currentDay) {
+        //Sets the Content:
+        var area = document.getElementById('text-area').innerHTML;
+        area = area.replace(new RegExp(currentDate, "g"), "<a>" + currentDate + "</a>");
+        document.getElementById('text-area').innerHTML = area;
+      }
+
+      turns++;
     }
   }
 }
 
-//Send Message Function:
-function sendMessage(text) {
-  //Checks the Case:
-  if (text != "" && !text.includes(outgoingKey)
-    && !text.includes(incomingKey)) {
+//Check All Dates:
+function checkAllDates() {
+  //Gets the Data:
+  data = getCacheData(dataID, true);
+
+  //Loop Variables:
+  var past = 0;
+  var now = 0;
+  var future = 0;
+  var turns = 0;
+
+  //Loops through Array:
+  mainLoop: while (turns < data.length) {
+    //Gets the Alerts:
+    var alerts = checkDates(dates(data[turns]));
+
     //Checks the Case:
-    if (getCacheData(fullID, false) == null
-      && getCacheData(codeID, false) != null) {
-      //Adds to the Outgoing:
-      outgoing = getCacheData(outgoingID, true);
-      outgoing.push(text + outgoingKey + JSON.stringify(Date.now()));
-      setCacheData(outgoingID, outgoing, true);
-      showOpponentMessage();
-
-      //Updates the Message:
-      currentCode = getCacheData(codeID, false);
-      database.collection(collectionName).doc(currentCode).update({
-        outgoing: JSON.stringify(getCacheData(outgoingID, true))
-      })
-        .catch((error) => {
-          //Error Message:
-          showGameMessage("An Error Ocurred");
-        });
+    if (alerts[0] != "") {
+      //Sets the Past:
+      past += alerts[0];
     }
 
-    else if (getCacheData(codeID, false) != null) {
-      //Adds to the Outgoing:
-      incoming = getCacheData(incomingID, true);
-      incoming.push(text + incomingKey + JSON.stringify(Date.now()));
-      setCacheData(incomingID, incoming, true);
-      showOpponentMessage();
-
-      //Updates the Message:
-      currentCode = getCacheData(codeID, false);
-      database.collection(collectionName).doc(currentCode).update({
-        incoming: JSON.stringify(getCacheData(incomingID, true))
-      })
-        .catch((error) => {
-          //Error Message:
-          showGameMessage("An Error Ocurred");
-        });
+    //Checks the Case:
+    if (alerts[1] != "") {
+      //Sets the Now:
+      now += alerts[1];
     }
+
+    //Checks the Case:
+    if (alerts[2] != "") {
+      //Sets the Future:
+      future += alerts[2];
+    }
+
+    turns++;
   }
+
+  //Returns the Values:
+  return [past, now, future];
 }
 
-//Get Game Function:
-function getGame() {
-  //Checks the Case:
-  if (getCacheData(fullID, false) == null
-    && getCacheData(codeID, false) != null) {
-    //Enables Loading:
-    enableLoading();
+//Check Dates Function:
+function checkDates(dates) {
+  //Loop Variable:
+  var turns = 0;
 
-    //Gets the Game:
-    currentCode = getCacheData(codeID, false);
-    database.collection(collectionName).doc(currentCode).get().then((docRef) => {
-      //Sets the Drawing:
-      drawing = JSON.parse(formatData(JSON.stringify(docRef.data().drawing)));
-      setCacheData(drawingID, drawing, true);
+  //Date Variables:
+  var date = new Date();
+  var currentMonth = date.getMonth() + 1;
+  var currentDay = date.getDate();
 
-      //Sets the Outgoing:
-      outgoing = JSON.parse(formatData(JSON.stringify(docRef.data().outgoing)));
-      setCacheData(outgoingID, outgoing, true);
+  //Count Variables:
+  var past = 0;
+  var now = 0;
+  var future = 0;
 
-      //Sets the Outgoing:
-      incoming = JSON.parse(formatData(JSON.stringify(docRef.data().incoming)));
-      setCacheData(incomingID, incoming, true);
+  //Loops through Array:
+  mainLoop: while (turns < dates.length) {
+    //Extracts the Dates:
+    var localDates = extractDate(dates[turns]);
 
-      //Sets the Guess:
-      guess = formatData(JSON.stringify(docRef.data().guess));
-      setCacheData(guessID, guess, false);
+    //Checks the Case:
+    if (localDates[0] < currentMonth ||
+      (localDates[0] == currentMonth && localDates[1] < currentDay)) {
+      //Adds to the Count:
+      past++;
+    }
 
-      //Sets the Word:
-      word = formatData(JSON.stringify(docRef.data().word));
-      setCacheData(wordID, word, false);
-    })
-      .then((docRef) => {
-        //Shows the Game:
-        disableLoading();
-        displayDrawing();
-        showOpponentMessage();
-        showResult();
-      })
-      .catch((error) => {
-        //Error Message:
-        disableLoading();
-        showGameMessage("An Error Ocurred");
-      });
+    else if (localDates[0] == currentMonth && localDates[1] == currentDay) {
+      //Adds to the Count:
+      now++;
+    }
+
+    else if (localDates[0] == currentMonth && localDates[1] > currentDay) {
+      //Adds to the Count:
+      future++;
+    }
+
+    turns++;
   }
 
-  else if (getCacheData(codeID, false) != null) {
-    //Enables Loading:
-    enableLoading();
-
-    //Gets the Game:
-    currentCode = getCacheData(codeID, false);
-    database.collection(collectionName).doc(currentCode).get().then((docRef) => {
-      //Sets the Drawing:
-      drawing = JSON.parse(formatData(JSON.stringify(docRef.data().drawing)));
-      setCacheData(drawingID, drawing, true);
-
-      //Sets the Outgoing:
-      outgoing = JSON.parse(formatData(JSON.stringify(docRef.data().outgoing)));
-      setCacheData(outgoingID, outgoing, true);
-
-      //Sets the Outgoing:
-      incoming = JSON.parse(formatData(JSON.stringify(docRef.data().incoming)));
-      setCacheData(incomingID, incoming, true);
-
-      //Sets the Guess:
-      guess = formatData(JSON.stringify(docRef.data().guess));
-      setCacheData(guessID, guess, false);
-
-      //Sets the Word:
-      word = formatData(JSON.stringify(docRef.data().word));
-      setCacheData(wordID, word, false);
-
-      //Sets the Full:
-      full = JSON.parse(formatData(JSON.stringify(docRef.data().full)));
-      setCacheData(fullID, full, true);
-    })
-      .then((docRef) => {
-        //Shows the Game:
-        disableLoading();
-        displayDrawing();
-        showOpponentMessage();
-        showResult();
-      })
-      .catch((error) => {
-        //Error Message:
-        disableLoading();
-        showGameMessage("An Error Ocurred");
-      });
+  //Sets the Value:
+  if (past == 0) {
+    //Sets the Value:
+    past = "";
   }
+
+  //Sets the Value:
+  if (now == 0) {
+    //Sets the Value:
+    now = "";
+  }
+
+  //Sets the Value:
+  if (future == 0) {
+    //Sets the Value:
+    future = "";
+  }
+
+  //Returns the Counts:
+  return [past, now, future];
+}
+
+//Extract Date Function:
+function extractDate(string) {
+  //Loop Variables:
+  var turns = 0;
+  var passed = false;
+
+  //String Variables:
+  var month = "";
+  var day = "";
+
+  //Loops through Array:
+  mainLoop: while (turns < string.length) {
+    //Checks the Case:
+    if (string[turns] != "-" && !passed) {
+      //Adds to the Month:
+      month += string[turns];
+    }
+
+    else if (string[turns] != "-" && passed) {
+      //Adds to the Day:
+      day += string[turns];
+    }
+
+    //Checks the Case:
+    if (string[turns] == "-") {
+      //Sets the Passed:
+      passed = true;
+    }
+
+    turns++;
+  }
+
+  //Parses Values:
+  var parsedMonth = parseInt(month);
+  var parsedDay = parseInt(day);
+
+  //Returns the Array:
+  return [parsedMonth, parsedDay];
+}
+
+//Dates Function:
+function dates(string) {
+  //Loop Variables:
+  var dates = [];
+  var turns = 0;
+
+  //Loops through Array:
+  mainLoop: while (turns < string.length) {
+    //Checks the Case:
+    if (string[turns] == "/" && turns != 0
+      && turns < string.length - 1) {
+      //Checks the Case:
+      if (!isNaN(string[turns - 1]) && !isNaN(string[turns + 1])) {
+        //Sets the Dates:
+        var date = string[turns - 1] + "-" + string[turns + 1];
+
+        //Checks the Case:
+        if (turns - 2 >= 0) {
+          //Checks the Case:
+          if (!isNaN(string[turns - 2])) {
+            //Sets the Date:
+            date = string[turns - 2] + "" + string[turns - 1] + "-" + string[turns + 1];
+          }
+        }
+
+        //Checks the Case:
+        if (turns + 2 < string.length) {
+          //Checks the Case:
+          if (!isNaN(string[turns + 2])) {
+            //Adds to the Date:
+            date += string[turns + 2];
+          }
+        }
+
+        //Pushes to Dates Array:
+        dates.push(date);
+      }
+    }
+
+    turns++;
+  }
+
+  //Returns the Dates:
+  return dates;
 }
 
 /* CACHE DATA FUNCTIONS */
@@ -458,25 +742,48 @@ function setCacheData(id, value, string) {
   }
 }
 
-//Remove Cache Data Function:
-function removeCacheData(id) {
-  //Removes Data:
-  localStorage.removeItem(id);
-}
-
 //Clear Cache Data:
 function clearCacheData() {
   //Clears Cache:
   localStorage.clear();
 }
 
+//Delete Cache Data:
+function deleteCacheData(id) {
+  //Deletes the Cache Item:
+  localStorage.removeItem(id);
+}
+
 //Firebase Server Formatting Function:
 function formatData(rawData) {
   //Replaces Info:
-  var string = rawData.replace(/\\/g, "");
+  var newData = rawData.replace(/\\n/g, "$n");
+  var string = newData.replace(/\\/g, "");
   var side = string.replace(/^./, "");
   var main = side.slice(0, -1);
+  var finalData = main.split("$n").join("\\n");
 
   //Returns the String:
-  return main;
+  return finalData;
+}
+
+//Delete Element Function:
+function deleteElement(array, index) {
+  //Loop Variables:
+  var turns = 0;
+  var localArray = [];
+
+  //Loops through Array:
+  mainLoop: while (turns < array.length) {
+    //Checks the Case:
+    if (turns != index) {
+      //Pushes to the Array:
+      localArray.push(array[turns]);
+    }
+
+    turns++;
+  }
+
+  //Return the Array:
+  return localArray;
 }

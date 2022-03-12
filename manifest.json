@@ -1,13 +1,13 @@
 {
-  "name": "Imagionary",
-  "short_name": "Imagionary",
-  "start_url": "https://imagionary.netlify.app",
+  "name": "MySadhana",
+  "short_name": "MySadhana",
+  "start_url": "https://mysadhana.netlify.app",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#000000",
+  "background_color": "#202020",
   "theme_color": "#000000",
-  "description": "Player Versus Player Pictionary",
-  "categories": ["gaming", "lifestyle"],
+  "description": "Personal Productivity App",
+  "categories": ["productivity", "lifestyle"],
   "icons": [
     {
       "src": "/src/Images/large_icon.png",
@@ -49,18 +49,18 @@
   "screenshots": [
     {
       "src": "/src/Images/screenshot.png",
-      "sizes": "428x770",
+      "sizes": "432x772",
       "type": "image/png"
     }
   ],
-  "url": "https://imagionary.netlify.app",
-  "manifestUrl": "https://imagionary.netlify.app/manifest.json",
+  "url": "https://mysadhana.netlify.app",
+  "manifestUrl": "https://mysadhana.netlify.app/manifest.json",
   "lang": "en-US",
   "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
   "related_applications": [
     {
       "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.pravegak.skribo&hl=en_US&gl=US"
+      "url": "https://play.google.com/store/apps/details?id=com.technicalround.iskconsadhanareport"
     }
   ]
 }
