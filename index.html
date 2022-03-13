@@ -70,7 +70,10 @@
         <div id="chatControls">
           <!-- Chat Input -->
           <input id="chatInput" />
-          &nbsp; <button onclick="sendMessage(document.getElementById('chatInput').value);"> Send </button>
+          &nbsp; <button 
+            onclick="sendMessage(document.getElementById('chatInput').value); closeChatInput();"> 
+            Send 
+          </button>
         </div>
       </div>
 

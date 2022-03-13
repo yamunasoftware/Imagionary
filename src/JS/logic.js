@@ -73,9 +73,6 @@ function showOpponentMessage() {
 
   //Element Variables:
   var box = document.getElementById('chatBox');
-  document.getElementById('chatInput').value = "";
-
-  //Contents Variables:
   var turns = 0;
   var chatContents = "";
 
@@ -258,6 +255,12 @@ function showOpponentMessage() {
   //Sets the HTML:
   box.innerHTML = chatContents;
   box.scrollTop = box.scrollHeight;
+}
+
+//Close Chat Input Function:
+function closeChatInput() {
+  //Resets the Chat Input:
+  document.getElementById('chatInput').value = "";
 }
 
 //Get Formatted Stamp Function:

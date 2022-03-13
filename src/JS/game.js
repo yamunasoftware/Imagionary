@@ -97,19 +97,19 @@ window.onload = function () {
   /* Input Events */
 
   //Chat Input Event:
-  document.getElementById('chatInput').addEventListener("input", function (e) {
+  document.getElementById('chatInput').addEventListener("input", function () {
     //Resets the Input Value:
     document.getElementById('chatInput').value = document.getElementById('chatInput').value.replace(/["]+/g, '');
   });
 
   //Code Input Event:
-  document.getElementById('codeInput').addEventListener("input", function (e) {
+  document.getElementById('codeInput').addEventListener("input", function () {
     //Resets the Input Value:
     document.getElementById('codeInput').value = document.getElementById('codeInput').value.replace(/["]+/g, '');
   });
 
   //Guess Input Event:
-  document.getElementById('guessInput').addEventListener("input", function (e) {
+  document.getElementById('guessInput').addEventListener("input", function () {
     //Resets the Input Value:
     document.getElementById('guessInput').value = document.getElementById('guessInput').value.replace(/["]+/g, '');
   });
