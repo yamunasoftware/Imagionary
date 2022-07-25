@@ -45,8 +45,11 @@ window.onload = function () {
 
   //Chat Interval:
   setInterval(function () {
-    //Sets the Chat:
-    showOpponentMessage();
+    //Checks the Case:
+    if (getCacheData(outgoingID, false) != null) {
+      //Sets the Chat:
+      showOpponentMessage();
+    }
   }, chatWaitTime);
 
   /* Mouse Events */
