@@ -524,8 +524,9 @@ function getURL() {
 
     //Checks the URL Parameters:
     if (urlParameters.has("c")) {
-      //Sets the Value:
+      //Joins the Game:
       document.getElementById('codeInput').value = urlParameters.get("c");
+      document.getElementById('joinButton').click();
     }
   }
 }
