@@ -15,7 +15,7 @@ Enter a code into into the input next to the "Join" button to join a game,
 or create a game of your own. When you create a game, you will be the person
 to draw the word that is randomly generated. Simply hold and drag your cursor
 or finger over the canvas to draw the picture and click the "Save" button to
-send the drawing to your opponent. 
+send the drawing to your opponent.
 
 When guessing, you can guess in the input underneath the picture display. Click
 the "Save" button to cast your guess, and the game will automatically tell you if
