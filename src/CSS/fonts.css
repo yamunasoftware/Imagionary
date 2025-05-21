@@ -1,0 +1,9 @@
+@font-face { 
+  font-family: "font-medium"; 
+  src: url("/src/Fonts/ZenMaruGothic-Medium.ttf"); 
+}
+  
+@font-face {
+  font-family: "font-bold";
+  src: url("/src/Fonts/ZenMaruGothic-Bold.ttf")
+}

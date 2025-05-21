@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<!-- Viewport -->
+<meta charset="utf-8" />
+<meta name="description" content="Player Versus Player Pictionary" />
+<meta name="viewport" content="initial-scale=1, width=device-width, height=device-height, viewport-fit=cover" />
+<meta name="theme-color" content="#000000" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<!-- Tab -->
+<head>
+  <title> Imagionary </title>
+
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/src/Images/medium_icon.png" />
+  <link rel="apple-touch-startup-image" href="/src/Images/medium_icon.png" />
+  <link rel="shortcut icon" type="image/png" href="/src/Images/small_icon.png" />
+</head>
+
+<!-- Stylesheets -->
+<link rel="stylesheet" type="text/css" href="/src/CSS/style.css" />
+<link rel="stylesheet" type="text/css" href="/src/CSS/fonts.css" />
+
+<!-- Cloud Scripts -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<!-- Scripts -->
+<script src="/src/JS/game.js"></script>
+<script src="/src/JS/cloud.js"></script>
+<script src="src/JS/logic.js"></script>
+
+<!-- Container -->
+<div id="container">
+
+  <!-- Body -->
+  <body>
+    <!-- Loading Screen -->
+    <div id=loading style="display: none;" class="style">
+      <!-- Loading Header -->
+      <div class="style">
+        <!-- Image Logo --> 
+        <image  src="/src/Images/medium_icon.png"></image>
+      </div>
+      
+      <!-- Animation -->
+      <div class="style lds-dual-ring"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="padding dark center">
+      <!-- Header -->
+      <div id="header" style=" font-family: 'font-bold', Arial, Helvetica, sans-serif; font-size: 60px;"
+        class="style">
+          <!-- Image Logo --> 
+          <image src="/src/Images/medium_icon.png"></image>
+      </div>
+
+      <!-- Game Code Message -->
+      <div id="gameCode" class="style"></div>
+
+      <!-- Chat Container -->
+      <div id="chatContainer" style="display: none;" class="style">
+        <!-- Chat Message -->
+        <div id="chatBox" class="style no-pointers chatBox"></div>
+
+        <!-- Chat Controls -->
+        <div id="chatControls">
+          <!-- Chat Input -->
+          <input id="chatInput" />
+          &nbsp; <button 
+            onclick="sendMessage(document.getElementById('chatInput').value); closeChatInput();"> 
+            Send 
+          </button>
+        </div>
+      </div>
+
+      <!-- Control Container -->
+      <div id="controlContainer" class="style">
+        <!-- Code Controls -->
+        <input id="codeInput" />
+        &nbsp; <button id="joinButton" onclick="joinGame(document.getElementById('codeInput').value);"> Join </button>
+        &nbsp; <button onclick="createGame();"> New </button>
+      </div>
+
+      <!-- Canvas Container -->
+      <div id="gameContainer" style="display: none;" class="style">
+        <!-- Game Canvas -->
+        <canvas id="gameCanvas" class="border" width="300" height="300"></canvas>
+      </div>
+
+      <!-- Draw Container -->
+      <div id="drawContainer" style="display: none;" class="style">
+        <!-- Draw Controls -->
+        &nbsp; <button onclick="sendGame(); showControlMessage('Saved');"> Save </button>
+        &nbsp; <button onclick="erase(); showControlMessage('Erased');"> Erase </button>
+        &nbsp; <button onclick="clearCacheData(); window.location.reload();"> Quit </button>
+        &nbsp; <button onclick="window.location.reload();"> Update </button>
+        &nbsp; <button onclick="window.open('https://github.com/yamunasoftware/Imagionary/blob/main/README.md');"> 
+          Help 
+        </button>
+      </div>
+
+      <!-- Guess Container -->
+      <div id="guessContainer" style="display: none;" class="style">
+        <!-- Guess Controls -->
+        <input id="guessInput" />
+        &nbsp; <button onclick="sendGuess(document.getElementById('guessInput').value);"> Save </button>
+        &nbsp; <button onclick="clearCacheData(); window.location.reload();"> Quit </button>
+        &nbsp; <button onclick="window.location.reload();"> Update </button>
+        &nbsp; <button onclick="window.open('https://github.com/yamunasoftware/Imagionary/blob/main/README.md');"> 
+          Help 
+        </button>
+      </div>
+
+      <!-- Game Control Message -->
+      <div id="controlMessage" class="style"></div>
+    </div>
+  </body>
+</div>
+
+</html>
