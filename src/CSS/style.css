@@ -109,6 +109,12 @@ html, body {
 
 /* CONTROL ITEMS */
 
+image {
+  box-shadow: none !important;
+  border: none !important;
+  border-style: none !important;
+}
+
 button {
   margin-bottom: 20px;
   font-family: "font-bold", Arial, Helvetica, sans-serif;
