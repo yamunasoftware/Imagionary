@@ -1,6 +1,4 @@
-/* CLOUD DATABASE ACCESS */
-
-/* CONFIG */
+/* CLOUD DATABASE CONFIG */
 
 //Config Data Variable:
 const firebaseConfig = {
@@ -15,8 +13,6 @@ const firebaseConfig = {
 //Initializes App:
 firebase.initializeApp(firebaseConfig);
 var database = firebase.firestore();
-
-/* DATA VARIABLES */
 
 //Game Variables:
 var currentCode = "";
@@ -72,7 +68,7 @@ function checkGame(code) {
 }
 
 //Create Game Function:
-function createGame() {
+async function createGame() {
   //Checks the Case:
   if (getCacheData(codeID, false) == null) {
     //Sets the Drawing:
@@ -80,7 +76,7 @@ function createGame() {
     resetDrawing();
 
     //Sets the Word:
-    word = randomWord();
+    word = await randomWord();
     setCacheData(wordID, word, false);
 
     //Sets the Code:
@@ -434,12 +430,10 @@ function getGame() {
 function getCacheData(id, read) {
   //Checks the Case:
   if (read) {
-    //Returns the Data:
     return JSON.parse(localStorage.getItem(id));
   }
 
   else {
-    //Returns the Data:
     return localStorage.getItem(id);
   }
 }
@@ -448,25 +442,21 @@ function getCacheData(id, read) {
 function setCacheData(id, value, string) {
   //Checks the Case:
   if (string) {
-    //Sets the Data:
     localStorage.setItem(id, JSON.stringify(value));
   }
 
   else {
-    //Sets the Data:
     localStorage.setItem(id, value);
   }
 }
 
 //Remove Cache Data Function:
 function removeCacheData(id) {
-  //Removes Data:
   localStorage.removeItem(id);
 }
 
 //Clear Cache Data:
 function clearCacheData() {
-  //Clears Cache:
   localStorage.clear();
 }
 
@@ -476,7 +466,5 @@ function formatData(rawData) {
   var string = rawData.replace(/\\/g, "");
   var side = string.replace(/^./, "");
   var main = side.slice(0, -1);
-
-  //Returns the String:
   return main;
 }

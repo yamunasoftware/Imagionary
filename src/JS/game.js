@@ -1,21 +1,17 @@
 /* GAME SETUP */
 
-//Canvas Variables:
+//Game Variables:
 var canvas;
 var context;
-
-//Mouse Variables:
 var x = 0;
 var y = 0;
 var down = false;
-
-//Wait Times:
 var mouseWaitTime = 10;
 var chatWaitTime = 1000;
 
 //Onload:
 window.onload = function () {
-  /* Game Controls */
+  /* SETUP */
 
   //Gets the Game:
   getURL();
@@ -28,31 +24,24 @@ window.onload = function () {
   showWord();
   disableLoading();
 
-  /* Game Setup */
-
   //Canvas Setup:
   canvas = document.getElementById('gameCanvas');
   context = canvas.getContext('2d');
   square('#FFFFFF', 0, 0, canvas.width);
 
-  /* Intervals */
-
   //Mouse Interval:
   setInterval(function () {
-    //Checks Mouse Down:
     mouseDown();
   }, mouseWaitTime);
 
   //Chat Interval:
   setInterval(function () {
-    //Checks the Case:
     if (getCacheData(outgoingID, false) != null) {
-      //Sets the Chat:
       showOpponentMessage();
     }
   }, chatWaitTime);
 
-  /* Mouse Events */
+  /* EVENTS */
 
   //Mouse Coordinates Event:
   canvas.addEventListener("mousemove", function (e) {
@@ -64,8 +53,6 @@ window.onload = function () {
     //Draws on the Screen:
     draw(true);
   });
-
-  /* Touch Events */
 
   //Touch Scroll Disable Event:
   canvas.addEventListener("touchstart", function (e) {
@@ -89,32 +76,30 @@ window.onload = function () {
     draw(false);
   });
 
-  /* Touch Default Events */
-
   //Disables Default Events:
   canvas.addEventListener("touchstart", function(e) {e.preventDefault()});
   canvas.addEventListener("touchmove", function(e) {e.preventDefault()});
   canvas.addEventListener("touchend", function(e) {e.preventDefault()});
   canvas.addEventListener("touchcancel", function(e) {e.preventDefault()});
 
-  /* Input Events */
-
   //Chat Input Event:
   document.getElementById('chatInput').addEventListener("input", function () {
-    //Resets the Input Value:
     document.getElementById('chatInput').value = document.getElementById('chatInput').value.replace(/["]+/g, '');
   });
 
   //Code Input Event:
   document.getElementById('codeInput').addEventListener("input", function () {
-    //Resets the Input Value:
     document.getElementById('codeInput').value = document.getElementById('codeInput').value.replace(/["]+/g, '');
   });
 
   //Guess Input Event:
   document.getElementById('guessInput').addEventListener("input", function () {
-    //Resets the Input Value:
     document.getElementById('guessInput').value = document.getElementById('guessInput').value.replace(/["]+/g, '');
+  });
+
+  //Create Button Event:
+  document.getElementById('createButton').addEventListener("click", async function () {
+    await createGame();
   });
 }
 
@@ -125,9 +110,7 @@ function draw(click) {
   //Checks the Case:
   if (getCacheData(fullID, false) == null
     && getCacheData(codeID, false) != null) {
-    //Checks the Case:
     if (click) {
-      //Checks the Case:
       if (down) {
         //Sets the Pixel Color:
         square('#000000', x, y, 1);
@@ -143,12 +126,11 @@ function draw(click) {
   }
 }
 
-//Erase Function:
+//Erase Canvas Function:
 function erase() {
   //Checks the Case:
   if (getCacheData(fullID, false) == null
     && getCacheData(codeID, false) != null) {
-    //Erase Canvas:
     square('#FFFFFF', 0, 0, canvas.width);
     x = 0;
     y = 0;
@@ -157,24 +139,15 @@ function erase() {
 
 //Square Function:
 function square(color, x, y, dimension) {
-  //Draws Rectangle:
   context.fillStyle = color;
   context.fillRect(x, y, dimension, dimension);
 }
 
 //Mouse Down Function:
 function mouseDown() {
-  //Down Event:
-  canvas.onmousedown = function () {
-    //Sets the Down:
-    down = true;
-  }
-
-  //Down Event:
-  canvas.onmouseup = function () {
-    //Sets the Down:
-    down = false;
-  }
+  //Down Events:
+  canvas.onmousedown = function () { down = true; }
+  canvas.onmouseup = function () { down = false; }
 }
 
 /* DRAWING FUNCTIONS */
@@ -185,18 +158,12 @@ function displayDrawing() {
   if (getCacheData(codeID, false) != null) {
     //Gets the Drawing:
     drawing = getCacheData(drawingID, true);
-
-    //Loop Variable:
     var turnsWidth = 0;
 
     //Loops through Array:
-    mainLoop: while (turnsWidth < canvas.width) {
-      //Loop Variable:
+    while (turnsWidth < canvas.width) {
       var turnsHeight = 0;
-
-      //Loops through Array:
-      secondLoop: while (turnsHeight < canvas.height) {
-        //Checks the Case:
+      while (turnsHeight < canvas.height) {
         if (drawing[turnsWidth][turnsHeight] == "+") {
           //Draws the Pixel:
           square('#000000', turnsWidth, turnsHeight, 1);
@@ -214,62 +181,43 @@ function displayDrawing() {
 function resetDrawing() {
   //Empties Array:
   drawing = [];
-
-  //Loop Variables:
   var turnsWidth = 0;
   var subArray = [];
 
-  //Loops through Array:
-  mainLoop: while (turnsWidth < canvas.width) {
-    //Pushes to Sub Array:
+  //Resets the Array:
+  while (turnsWidth < canvas.width) {
     subArray.push("-");
-
     turnsWidth++;
   }
 
-  //Loop Variable:
+  //Saves the Drawing:
   var turnsHeight = 0;
-
-  //Loops through Array:
-  secondLoop: while (turnsHeight < canvas.height) {
-    //Pushes to Main Array:
+  while (turnsHeight < canvas.height) {
     drawing.push(subArray);
-
     turnsHeight++;
   }
-
-  //Saves the Drawing:
   setCacheData(drawingID, drawing, true);
 }
 
-//Saves Drawing:
+//Save Drawing Function:
 function saveDrawing() {
   //Checks the Case:
   if (getCacheData(codeID, false) != null) {
     //Gets the Drawing:
     drawing = getCacheData(drawingID, true);
-
-    //Loop Variable:
     var turnsWidth = 0;
 
-    //Loops through Array:
-    mainLoop: while (turnsWidth < canvas.width) {
-      //Loop Variable:
+    //Saves the Drawing:
+    while (turnsWidth < canvas.width) {
       var turnsHeight = 0;
-
-      //Loops through Array:
-      secondLoop: while (turnsHeight < canvas.height) {
+      while (turnsHeight < canvas.height) {
         //Gets the Pixel Data:
         var data = context.getImageData(turnsWidth, turnsHeight, 1, 1).data;
-
-        //Checks the Case:
         if (data[0] == 0 && data[1] == 0 && data[2] == 0) {
-          //Sets the Drawing:
           drawing[turnsWidth][turnsHeight] = "+";
         }
 
         else {
-          //Sets the Drawing:
           drawing[turnsWidth][turnsHeight] = "-";
         }
 
@@ -278,8 +226,6 @@ function saveDrawing() {
 
       turnsWidth++;
     }
-
-    //Sets the Drawing:
     setCacheData(drawingID, drawing, true);
   }
 }
