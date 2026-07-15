@@ -369,19 +369,9 @@ async function randomWord() {
   return words[index];
 }
 
-//Generate Game Code Function:
+//Generate Game Code GUID Function:
 function generateCode() {
-  //Loop Variables:
-  var turns = 0;
-  var code = "";
-
-  //Loops through Array:
-  while (turns < 20) {
-    var digit = Math.floor((Math.random() * 9) + 1);
-    code += digit;
-    turns++;
-  }
-  return code;
+  return crypto.randomUUID();
 }
 
 //Join URL Function:
